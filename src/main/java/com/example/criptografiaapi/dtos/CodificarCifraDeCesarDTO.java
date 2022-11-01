@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class codificarCifraDeCesar {
+public class CodificarCifraDeCesarDTO {
 
     private String mensagem;
 
