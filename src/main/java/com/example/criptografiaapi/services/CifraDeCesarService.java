@@ -39,26 +39,38 @@ public class CifraDeCesarService {
         cifraDeCesarRepository.save(cifraDeCesar);
     }
 
-    public String decodificarCifraDeCesar(Long id, int senha) {
-        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
-
+    public CifraDeCesarDTO decodificarCifraDeCesar(String mensagem, int senha) {
         if(senha > 99 || senha < 1) {
             throw new RuntimeException("A senha deve estar entre 0 e 99!");
         }
         StringBuilder texto = new StringBuilder();
-        int tamanhoTexto = cifraDeCesar.getMensagem().length();
+        int tamanhoTexto = mensagem.length();
         for (int c = 0; c < tamanhoTexto; c++) {
-            int letraDecifradaASCII = ((int) cifraDeCesar.getMensagem().charAt(c)) - senha;
+            int letraDecifradaASCII = ((int) mensagem.charAt(c)) - senha;
 
             while (letraDecifradaASCII < 32) {
                 letraDecifradaASCII += 94;
             }
             texto.append((char) letraDecifradaASCII);
         }
-        return texto.toString();
+        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
+        cifraDeCesarDTO.setSenha(senha);
+        cifraDeCesarDTO.setMensagem(texto.toString());
+        return cifraDeCesarDTO;
+    }
+
+    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id, int senha) {
+        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
+        CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(cifraDeCesar.getMensagem(), senha);
+        cifraDeCesarDTO.setId(cifraDeCesar.getId());
+        return cifraDeCesarDTO;
     }
 
     public List<CifraDeCesarDTO> buscarTodas() {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
+    }
+
+    public CifraDeCesarDTO buscarCifra(Long id, int senha) {
+        return decodificarCifraDeCesarPersistida(id, senha);
     }
 }

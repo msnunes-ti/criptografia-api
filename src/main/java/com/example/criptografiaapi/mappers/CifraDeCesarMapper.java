@@ -1,6 +1,7 @@
 package com.example.criptografiaapi.mappers;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.models.CifraDeCesar;
 
 import java.util.ArrayList;
@@ -20,5 +21,18 @@ public class CifraDeCesarMapper {
         return cifraDeCesarDTOList;
     }
 
+    public static CifraDeCesarDTO toCifraDeCesarDTO(CifraDeCesar cifraDeCesar) {
+        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
+        cifraDeCesarDTO.setId(cifraDeCesar.getId());
+        cifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
+        cifraDeCesarDTO.setSenha(cifraDeCesar.getSenha());
+        return cifraDeCesarDTO;
+    }
 
+    public static  CifraDeCesarDTO toCifraDeCesarDTO2(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
+        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
+        cifraDeCesarDTO.setMensagem(decodificarCifraDeCesarDTO.getMensagem());
+        cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
+        return cifraDeCesarDTO;
+    }
 }
