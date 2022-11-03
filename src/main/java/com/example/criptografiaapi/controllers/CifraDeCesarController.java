@@ -36,5 +36,4 @@ public class CifraDeCesarController {
     public @ResponseBody CifraDeCesarDTO decodificarCifraDeCesar(@RequestBody @NotNull DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
         return cifraDeCesarService.decodificarCifraDeCesar(decodificarCifraDeCesarDTO.getMensagem(), decodificarCifraDeCesarDTO.getSenha());
     }
-
 }
