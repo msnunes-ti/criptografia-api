@@ -47,7 +47,6 @@ public class CifraDeCesarService {
         int tamanhoTexto = mensagem.length();
         for (int c = 0; c < tamanhoTexto; c++) {
             int letraDecifradaASCII = ((int) mensagem.charAt(c)) - senha;
-
             while (letraDecifradaASCII < 32) {
                 letraDecifradaASCII += 94;
             }
