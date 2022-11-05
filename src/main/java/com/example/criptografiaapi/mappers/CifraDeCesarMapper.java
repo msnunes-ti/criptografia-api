@@ -35,4 +35,5 @@ public class CifraDeCesarMapper {
         cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
         return cifraDeCesarDTO;
     }
+    
 }
