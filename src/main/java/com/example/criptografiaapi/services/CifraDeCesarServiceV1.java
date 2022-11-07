@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Deprecated
 @Service
 @Getter
 @Setter
-public class CifraDeCesarService {
+public class CifraDeCesarServiceV1 {
 
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
