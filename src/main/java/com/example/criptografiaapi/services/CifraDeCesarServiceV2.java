@@ -23,21 +23,25 @@ public class CifraDeCesarServiceV2 {
         }
         List<String> letras = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         int parteInteira = codificarCifraDeCesarDTO.getSenha() % letras.size();
-        int codigoValido = ((codificarCifraDeCesarDTO.getSenha() % letras.size()) - parteInteira) * letras.size();
+//        int codigoValido = (((codificarCifraDeCesarDTO.getSenha() % letras.size()) * letras.size()) - parteInteira);
         StringBuilder mensagemCodificada = new StringBuilder();
         for (int i = 0; i < codificarCifraDeCesarDTO.getMensagem().length(); i++) {
-            String letraParaCifrar = String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i));
             int indice = 0;
-            for (int j = 0; j < letras.size(); j++) {
+            String letraParaCifrar = String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i));
+
+            for (int j = 1; j < letras.size(); j++) {
                 if (letras.get(j).equals(letraParaCifrar)) {
                     indice = j;
                     break;
                 }
             }
-            int letraCifrada = indice + codigoValido;
-//            while (letraCifrada > 25) {
-//                letraCifrada -= 26;
-//            }
+            int letraCifrada = indice + parteInteira;
+
+            while (letraCifrada > 25) {
+                letraCifrada -= 26;
+
+            }
+            indice = 0;
             mensagemCodificada.append(letras.get(letraCifrada));
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
