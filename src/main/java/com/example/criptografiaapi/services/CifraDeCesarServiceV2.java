@@ -30,7 +30,7 @@ public class CifraDeCesarServiceV2 {
             String letraParaCifrar = String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i));
 
             for (int j = 1; j < letras.size(); j++) {
-                if (letras.get(j).equals(letraParaCifrar)) {
+                if (letras.get(j).equalsIgnoreCase(letraParaCifrar)) {
                     indice = j;
                     break;
                 }
@@ -41,8 +41,12 @@ public class CifraDeCesarServiceV2 {
                 letraCifrada -= 26;
 
             }
-            indice = 0;
-            mensagemCodificada.append(letras.get(letraCifrada));
+//            indice = 0;
+            if (letraParaCifrar.equals(" ")) {
+                mensagemCodificada.append(" ");
+            } else {
+                mensagemCodificada.append(letras.get(letraCifrada));
+            }
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
         cifraDeCesar.setMensagem(mensagemCodificada.toString());
