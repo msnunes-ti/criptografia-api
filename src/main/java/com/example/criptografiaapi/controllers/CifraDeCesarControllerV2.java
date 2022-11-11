@@ -8,12 +8,24 @@ import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/v2/cifra")
 public class CifraDeCesarControllerV2 {
 
     @Autowired
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
+
+    @GetMapping
+    public List<CifraDeCesarDTO> buscarTodasCodificadas() {
+        return cifraDeCesarServiceV2.buscarTodas();
+    }
+
+    @GetMapping(path = "{id}")
+    public CifraDeCesarDTO buscarCifra(@PathVariable Long id, @RequestBody CifraDeCesarDTO cifraDeCesarDTO) {
+        return cifraDeCesarServiceV2.buscarCifra(id, cifraDeCesarDTO.getSenha());
+    }
 
     @PostMapping(path = "/codificar")
     public @ResponseBody void codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {

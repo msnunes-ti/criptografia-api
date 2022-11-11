@@ -3,19 +3,46 @@ package com.example.criptografiaapi.services;
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.models.CifraDeCesar;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class CifraDeCesarServiceV2 {
 
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
+
+    public List<CifraDeCesarDTO> buscarTodas() {
+        return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
+    }
+
+    public CifraDeCesarDTO buscarCifra(Long id, int senha) {
+        return decodificarCifraDeCesarPersistida(id, senha);
+    }
+
+    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id, int senha) {
+        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
+        DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
+        decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
+        decodificarCifraDeCesarDTO.setSenha(senha);
+        CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
+        cifraDeCesarDTO.setId(cifraDeCesar.getId());
+        return cifraDeCesarDTO;
+    }
+
+    public static String removeAcentos(String letra) {
+        String normalizer = Normalizer.normalize(letra, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalizer).replaceAll("");
+    }
 
     public void criptografar(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
         if(codificarCifraDeCesarDTO.getSenha() > 99 || codificarCifraDeCesarDTO.getSenha() < 1) {
@@ -26,7 +53,7 @@ public class CifraDeCesarServiceV2 {
         StringBuilder mensagemCodificada = new StringBuilder();
         for (int i = 0; i < codificarCifraDeCesarDTO.getMensagem().length(); i++) {
             int indice = 0;
-            String letraParaCifrar = String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i));
+            String letraParaCifrar = removeAcentos(String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i)));
             for (int j = 1; j < letras.size(); j++) {
                 if (letras.get(j).equalsIgnoreCase(letraParaCifrar)) {
                     indice = j;
@@ -34,7 +61,6 @@ public class CifraDeCesarServiceV2 {
                 }
             }
             int letraCifrada = indice + parteInteira;
-
             while (letraCifrada > 25) {
                 letraCifrada -= 26;
             }
