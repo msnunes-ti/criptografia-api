@@ -50,7 +50,7 @@ public class CifraDeCesarServiceV2 {
         cifraDeCesarRepository.save(cifraDeCesar);
     }
 
-    public CifraDeCesarDTO decriptografar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
+    public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
         if(decodificarCifraDeCesarDTO.getSenha() > 99 || decodificarCifraDeCesarDTO.getSenha() < 1) {
             throw new RuntimeException("A senha deve estar entre 1 e 99");
         }
