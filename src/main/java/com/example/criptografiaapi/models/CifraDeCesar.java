@@ -24,4 +24,5 @@ public class CifraDeCesar {
     @NotNull
     @Column(name = "senha")
     private Integer senha;
+    
 }
