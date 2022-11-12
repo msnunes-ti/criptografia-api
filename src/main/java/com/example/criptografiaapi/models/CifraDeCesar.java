@@ -23,7 +23,7 @@ public class CifraDeCesar {
     private String mensagem;
 
     @Column(name = "descricao", length = 200)
-    private String decricao;
+    private String descricao;
 
     @NotNull
     @Column(name = "senha")

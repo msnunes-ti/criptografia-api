@@ -83,7 +83,6 @@ public class CifraDeCesarServiceV2 {
             } else {
                 indiceRotor++;
             }
-
             int indiceLetraCifrada = indiceLetra + senhaList.get(indiceSenha);
 
             while (indiceLetraCifrada > 25) {
@@ -99,6 +98,7 @@ public class CifraDeCesarServiceV2 {
         cifraDeCesar.setMensagem(mensagemCodificada.toString());
         cifraDeCesar.setSenha(codificarCifraDeCesarDTO.getSenha());
         cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
+        cifraDeCesar.setDescricao(codificarCifraDeCesarDTO.getDescricao());
         cifraDeCesarRepository.save(cifraDeCesar);
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
     }

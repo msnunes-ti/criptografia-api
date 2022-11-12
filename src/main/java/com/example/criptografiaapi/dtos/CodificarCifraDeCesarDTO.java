@@ -11,7 +11,7 @@ public class CodificarCifraDeCesarDTO {
     @NotNull
     private String mensagem;
 
-    private String decricao;
+    private String descricao;
 
     @NotNull
     private Integer senha;

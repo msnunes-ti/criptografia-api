@@ -13,7 +13,7 @@ public class CifraDeCesarDTO {
 
     private String mensagem;
 
-    private String decricao;
+    private String descricao;
 
     private Integer senha;
 
