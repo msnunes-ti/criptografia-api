@@ -28,8 +28,8 @@ public class CifraDeCesarControllerV2 {
     }
 
     @PostMapping(path = "/codificar")
-    public @ResponseBody void codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        cifraDeCesarServiceV2.criptografar(codificarCifraDeCesarDTO);
+    public @ResponseBody CifraDeCesarDTO codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
+        return cifraDeCesarServiceV2.criptografar(codificarCifraDeCesarDTO);
     }
 
     @PostMapping(path = "/decodificar")

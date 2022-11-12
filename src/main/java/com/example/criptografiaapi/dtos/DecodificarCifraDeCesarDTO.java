@@ -9,5 +9,8 @@ public class DecodificarCifraDeCesarDTO {
 
     private String mensagem;
 
-    private Integer senha;
+    private String decricao;
+
+    private Integer senha;   
+
 }
