@@ -22,7 +22,7 @@ public class CifraDeCesarControllerV2 {
         return cifraDeCesarServiceV2.buscarTodas();
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public CifraDeCesarDTO buscarCifra(@PathVariable Long id, @RequestBody CifraDeCesarDTO cifraDeCesarDTO) {
         return cifraDeCesarServiceV2.buscarCifra(id, cifraDeCesarDTO.getSenha());
     }

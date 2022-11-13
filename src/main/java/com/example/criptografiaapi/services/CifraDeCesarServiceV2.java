@@ -34,9 +34,11 @@ public class CifraDeCesarServiceV2 {
         CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
         DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
         decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
+        decodificarCifraDeCesarDTO.setDecricao(cifraDeCesar.getDescricao());
         decodificarCifraDeCesarDTO.setSenha(senha);
         CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
         cifraDeCesarDTO.setId(cifraDeCesar.getId());
+        cifraDeCesarDTO.setDescricao(cifraDeCesar.getDescricao());
         return cifraDeCesarDTO;
     }
 
