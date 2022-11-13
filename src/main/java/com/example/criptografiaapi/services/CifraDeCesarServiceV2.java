@@ -155,7 +155,6 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
     }
 
-
     public void deletarCifraDeCesar(Long id) {
         CifraDeCesar cifraDeCesar = buscarPeloId(id);
         cifraDeCesarRepository.delete(cifraDeCesar);
