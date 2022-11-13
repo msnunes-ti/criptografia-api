@@ -110,8 +110,6 @@ public class CifraDeCesarServiceV2 {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
         List<String> rotorUm = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-//        List<String> rotorDois = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-//        List<String> rotorTres = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         List<String> rotorDois = Arrays.asList("h", "i", "w", "z", "o", "r", "x", "a", "b", "y", "v", "f", "t", "p", "e", "n", "u", "l", "c", "m", "q", "k", "s", "g", "j", "d");
         List<String> rotorTres = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
 
@@ -122,7 +120,6 @@ public class CifraDeCesarServiceV2 {
             senhaList.add(0, senha % 10);
             senha /= 10;
         } while (senha > 0);
-
         int indiceSenha = 0;
         int indiceRotor = 0;
         StringBuilder mensagemCodificada = new StringBuilder();
@@ -140,18 +137,15 @@ public class CifraDeCesarServiceV2 {
             while (indiceLetraCifrada < 0) {
                 indiceLetraCifrada += 26;
             }
-            if (letraParaCifrar.equals(" ")) {
-                mensagemCodificada.append(" ");
+            if (letraParaCifrar.equals(" ")) { mensagemCodificada.append(" ");
             } else {
                 mensagemCodificada.append(rotores.get(indiceRotor).get(indiceLetraCifrada));
             }
-            if (indiceSenha > 4) {
-                indiceSenha = 0;
+            if (indiceSenha > 4) { indiceSenha = 0;
             } else {
                 indiceSenha++;
             }
-            if (indiceRotor > 1) {
-                indiceRotor = 0;
+            if (indiceRotor > 1) { indiceRotor = 0;
             } else {
                 indiceRotor++;
             }
