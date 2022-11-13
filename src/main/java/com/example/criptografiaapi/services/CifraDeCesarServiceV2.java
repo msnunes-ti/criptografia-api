@@ -22,6 +22,10 @@ public class CifraDeCesarServiceV2 {
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
 
+    private CifraDeCesar buscarPeloId (Long id) {
+        return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
+    }
+
     public List<CifraDeCesarDTO> buscarTodas() {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
@@ -34,7 +38,6 @@ public class CifraDeCesarServiceV2 {
         CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
         DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
         decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
-        decodificarCifraDeCesarDTO.setDecricao(cifraDeCesar.getDescricao());
         decodificarCifraDeCesarDTO.setSenha(senha);
         CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
         cifraDeCesarDTO.setId(cifraDeCesar.getId());
@@ -150,5 +153,11 @@ public class CifraDeCesarServiceV2 {
         cifraDeCesar.setSenha(decodificarCifraDeCesarDTO.getSenha());
         cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
+    }
+
+
+    public void deletarCifraDeCesar(Long id) {
+        CifraDeCesar cifraDeCesar = buscarPeloId(id);
+        cifraDeCesarRepository.delete(cifraDeCesar);
     }
 }

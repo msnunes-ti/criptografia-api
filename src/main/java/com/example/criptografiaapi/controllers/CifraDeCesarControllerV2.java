@@ -36,5 +36,10 @@ public class CifraDeCesarControllerV2 {
     public @ResponseBody CifraDeCesarDTO decofificarCifraDeCesar(@RequestBody @NotNull DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
         return cifraDeCesarServiceV2.decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
     }
+
+    @DeleteMapping(path = "/{id}")
+    public void deletarCifraDeCesar(@PathVariable Long id){
+        cifraDeCesarServiceV2.deletarCifraDeCesar(id);
+    }
 }
 
