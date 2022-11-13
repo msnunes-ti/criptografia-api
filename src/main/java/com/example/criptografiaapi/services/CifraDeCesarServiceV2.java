@@ -78,7 +78,6 @@ public class CifraDeCesarServiceV2 {
                 }
             }
             int indiceLetraCifrada = indiceLetra + senhaList.get(indiceSenha);
-
             while (indiceLetraCifrada > 25) {
                 indiceLetraCifrada -= 26;
             }
@@ -131,7 +130,6 @@ public class CifraDeCesarServiceV2 {
                 }
             }
             int indiceLetraCifrada = indiceLetra - senhaList.get(indiceSenha);
-
             while (indiceLetraCifrada < 0) {
                 indiceLetraCifrada += 26;
             }
