@@ -149,6 +149,4 @@ public class CifraDeCesarServiceV2 {
         cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
     }
-
-
 }

@@ -32,5 +32,4 @@ public class CifraDeCesar {
     @NotNull
     @Column(name = "data_codificacao")
     private LocalDateTime dataDaCodificacao;
-
 }
