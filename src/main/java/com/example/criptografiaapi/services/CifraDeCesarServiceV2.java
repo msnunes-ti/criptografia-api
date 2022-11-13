@@ -51,6 +51,8 @@ public class CifraDeCesarServiceV2 {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
         List<String> rotorUm = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+//        List<String> rotorDois = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+//        List<String> rotorTres = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         List<String> rotorDois = Arrays.asList("h", "i", "w", "z", "o", "r", "x", "a", "b", "y", "v", "f", "t", "p", "e", "n", "u", "l", "c", "m", "q", "k", "s", "g", "j", "d");
         List<String> rotorTres = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
         List<List<String>> rotores = Arrays.asList(rotorUm, rotorDois, rotorTres);
@@ -67,21 +69,11 @@ public class CifraDeCesarServiceV2 {
         for (int i = 0; i < codificarCifraDeCesarDTO.getMensagem().length(); i++) {
             int indiceLetra = 0;
             String letraParaCifrar = removeAcentos(String.valueOf(codificarCifraDeCesarDTO.getMensagem().charAt(i)));
-            for (int j = 1; j < rotorUm.size(); j++) {
-                if (rotorUm.get(j).equalsIgnoreCase(letraParaCifrar)) {
+            for (int j = 0; j < rotorUm.size(); j++) {
+                if (rotores.get(indiceRotor).get(j).equalsIgnoreCase(letraParaCifrar)) {
                     indiceLetra = j;
                     break;
                 }
-            }
-            if (indiceSenha > 4) {
-                indiceSenha = 0;
-            } else {
-                indiceSenha++;
-            }
-            if (indiceRotor > 1) {
-                indiceRotor = 0;
-            } else {
-                indiceRotor++;
             }
             int indiceLetraCifrada = indiceLetra + senhaList.get(indiceSenha);
 
@@ -92,6 +84,16 @@ public class CifraDeCesarServiceV2 {
                 mensagemCodificada.append(" ");
             } else {
                 mensagemCodificada.append(rotores.get(indiceRotor).get(indiceLetraCifrada));
+            }
+            if (indiceSenha > 4) {
+                indiceSenha = 0;
+            } else {
+                indiceSenha++;
+            }
+            if (indiceRotor > 1) {
+                indiceRotor = 0;
+            } else {
+                indiceRotor++;
             }
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
@@ -104,37 +106,95 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        if(decodificarCifraDeCesarDTO.getSenha() > 99 || decodificarCifraDeCesarDTO.getSenha() < 1) {
-            throw new RuntimeException("A senha deve estar entre 1 e 99");
+        if(decodificarCifraDeCesarDTO.getSenha() < 0 || decodificarCifraDeCesarDTO.getSenha() > 999999) {
+            throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
-        List<String> letras = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-        int parteInteira = decodificarCifraDeCesarDTO.getSenha() % letras.size();
-        StringBuilder mensagemDecodificada = new StringBuilder();
+        List<String> rotorUm = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+//        List<String> rotorDois = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+//        List<String> rotorTres = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+        List<String> rotorDois = Arrays.asList("h", "i", "w", "z", "o", "r", "x", "a", "b", "y", "v", "f", "t", "p", "e", "n", "u", "l", "c", "m", "q", "k", "s", "g", "j", "d");
+        List<String> rotorTres = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
+
+        List<List<String>> rotores = Arrays.asList(rotorUm, rotorDois, rotorTres);
+        int senha = decodificarCifraDeCesarDTO.getSenha();
+        List<Integer> senhaList = new ArrayList<>();
+        do {
+            senhaList.add(0, senha % 10);
+            senha /= 10;
+        } while (senha > 0);
+
+        int indiceSenha = 0;
+        int indiceRotor = 0;
+        StringBuilder mensagemCodificada = new StringBuilder();
         for (int i = 0; i < decodificarCifraDeCesarDTO.getMensagem().length(); i++) {
-            int indice = 0;
-            String letraParaCifrar = String.valueOf(decodificarCifraDeCesarDTO.getMensagem().charAt(i));
-            for (int j = 1; j < letras.size(); j++) {
-                if (letras.get(j).equalsIgnoreCase(letraParaCifrar)) {
-                    indice = j;
+            int indiceLetra = 0;
+            String letraParaCifrar = removeAcentos(String.valueOf(decodificarCifraDeCesarDTO.getMensagem().charAt(i)));
+            for (int j = 0; j < rotorUm.size(); j++) {
+                if (rotores.get(indiceRotor).get(j).equalsIgnoreCase(letraParaCifrar)) {
+                    indiceLetra = j;
                     break;
                 }
             }
-            int letraCifrada = indice - parteInteira;
+            int indiceLetraCifrada = indiceLetra - senhaList.get(indiceSenha);
 
-            while (letraCifrada < 0) {
-                letraCifrada += 26;
+            while (indiceLetraCifrada < 0) {
+                indiceLetraCifrada += 26;
             }
             if (letraParaCifrar.equals(" ")) {
-                mensagemDecodificada.append(" ");
+                mensagemCodificada.append(" ");
             } else {
-                mensagemDecodificada.append(letras.get(letraCifrada));
+                mensagemCodificada.append(rotores.get(indiceRotor).get(indiceLetraCifrada));
+            }
+            if (indiceSenha > 4) {
+                indiceSenha = 0;
+            } else {
+                indiceSenha++;
+            }
+            if (indiceRotor > 1) {
+                indiceRotor = 0;
+            } else {
+                indiceRotor++;
             }
         }
-        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
-        cifraDeCesarDTO.setMensagem(mensagemDecodificada.toString());
-        return  cifraDeCesarDTO;
+        CifraDeCesar cifraDeCesar = new CifraDeCesar();
+        cifraDeCesar.setMensagem(mensagemCodificada.toString());
+        cifraDeCesar.setSenha(decodificarCifraDeCesarDTO.getSenha());
+        cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
+        return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
     }
+
+//    public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
+//        if(decodificarCifraDeCesarDTO.getSenha() > 99 || decodificarCifraDeCesarDTO.getSenha() < 1) {
+//            throw new RuntimeException("A senha deve estar entre 1 e 99");
+//        }
+//        List<String> letras = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+//        int parteInteira = decodificarCifraDeCesarDTO.getSenha() % letras.size();
+//        StringBuilder mensagemDecodificada = new StringBuilder();
+//        for (int i = 0; i < decodificarCifraDeCesarDTO.getMensagem().length(); i++) {
+//            int indice = 0;
+//            String letraParaCifrar = String.valueOf(decodificarCifraDeCesarDTO.getMensagem().charAt(i));
+//            for (int j = 1; j < letras.size(); j++) {
+//                if (letras.get(j).equalsIgnoreCase(letraParaCifrar)) {
+//                    indice = j;
+//                    break;
+//                }
+//            }
+//            int letraCifrada = indice - parteInteira;
+//
+//            while (letraCifrada < 0) {
+//                letraCifrada += 26;
+//            }
+//            if (letraParaCifrar.equals(" ")) {
+//                mensagemDecodificada.append(" ");
+//            } else {
+//                mensagemDecodificada.append(letras.get(letraCifrada));
+//            }
+//        }
+//        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
+//        cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
+//        cifraDeCesarDTO.setMensagem(mensagemDecodificada.toString());
+//        return  cifraDeCesarDTO;
+//    }
 
 
 }
