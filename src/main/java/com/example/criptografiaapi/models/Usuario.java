@@ -33,8 +33,7 @@ public class Usuario {
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     UUID token;
-    
+
     @NotNull
     Boolean isAtivo;
-
 }
