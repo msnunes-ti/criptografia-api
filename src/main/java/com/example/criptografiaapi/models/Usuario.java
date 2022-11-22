@@ -1,14 +1,16 @@
 package com.example.criptografiaapi.models;
 
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Usuario {
 
     @Id
@@ -16,6 +18,7 @@ public class Usuario {
     Long id;
 
     @NotNull
+    @Column(unique = true)
     String usuario;
 
     @NotNull
@@ -36,4 +39,17 @@ public class Usuario {
 
     @NotNull
     Boolean isAtivo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario)) return false;
+        Usuario usuario1 = (Usuario) o;
+        return Objects.equals(getUsuario(), usuario1.getUsuario());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUsuario());
+    }
 }
