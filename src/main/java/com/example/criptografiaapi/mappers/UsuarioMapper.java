@@ -5,7 +5,7 @@ import com.example.criptografiaapi.models.Usuario;
 
 public class UsuarioMapper {
 
-    public Usuario toUsuario (CriarUsuarioDTO criarUsuarioDTO) {
+    public static Usuario toUsuario (CriarUsuarioDTO criarUsuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setUsuario(criarUsuarioDTO.getUsuario());
         usuario.setNome(criarUsuarioDTO.getNome());
