@@ -18,9 +18,6 @@ public class CriarUsuarioDTO {
     String senha;
 
     @NotNull
-    String senhaCriptografada;
-
-    @NotNull
     String email;
 
 }
