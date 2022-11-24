@@ -3,6 +3,7 @@ package com.example.criptografiaapi.models;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -34,7 +35,6 @@ public class Usuario {
     String email;
 
     @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     UUID token;
 
     @NotNull

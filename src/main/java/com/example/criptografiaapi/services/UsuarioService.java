@@ -7,6 +7,8 @@ import com.example.criptografiaapi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UsuarioService {
 
@@ -24,6 +26,7 @@ public class UsuarioService {
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
         usuario.setIsAtivo(true);
+        usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
     }
 }
