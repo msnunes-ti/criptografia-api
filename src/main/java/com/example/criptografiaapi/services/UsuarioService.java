@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.services;
 
+import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.Usuario;
@@ -27,9 +28,13 @@ public class UsuarioService {
         return Optional.ofNullable(usuarioRepository.findByUsuario(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
 
+    private Optional<Usuario> buscarUsuarioPeloId(Long id) {
+        return Optional.of(usuarioRepository.findById(id)).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+    }
+
     public ResponseEntity<Object> buscarPorUsuario(String usuario) {
         Optional<Usuario> usuario1 = usuarioRepository.findByUsuario(usuario);
-        if (!usuario1.isPresent()) {
+        if (usuario1.isEmpty()) {
             assert HttpStatus.resolve(204) != null;
             return new ResponseEntity<>(HttpStatus.resolve(204));
         }
@@ -47,5 +52,13 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public 
+    public void atualizarUsuario(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
+        Optional<Usuario> usuario = buscarUsuarioPeloId(id);
+        usuario.get().setNome(atualizarUsuarioDTO.getNome());
+        usuario.get().setSenha(atualizarUsuarioDTO.getSenha());
+        usuario.get().setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
+        usuario.get().setEmail(atualizarUsuarioDTO.getEmail());
+        usuario.get().setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
+        usuario.get().setToken(UUID.randomUUID());
+    }
 }

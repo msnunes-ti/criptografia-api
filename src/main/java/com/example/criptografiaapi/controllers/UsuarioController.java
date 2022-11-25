@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.controllers;
 
+import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioDTO;
 import com.example.criptografiaapi.services.UsuarioService;
@@ -23,6 +24,11 @@ public class UsuarioController {
     @PostMapping
     public void criarUsuario(@NotNull @RequestBody CriarUsuarioDTO criarUsuarioDTO) {
         usuarioService.criarUsuario(criarUsuarioDTO);
+    }
+
+    @PutMapping(path = "/{id}")
+    public void atualizarUsuario(@PathVariable long id, @RequestBody AtualizarUsuarioDTO atualizarUsuarioDTO) {
+        usuarioService.atualizarUsuario(id, atualizarUsuarioDTO);
     }
 
 }

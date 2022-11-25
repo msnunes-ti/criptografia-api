@@ -1,18 +1,28 @@
 package com.example.criptografiaapi.mappers;
 
+import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioDTO;
 import com.example.criptografiaapi.models.Usuario;
 
 public class UsuarioMapper {
 
-    public static Usuario toUsuario (CriarUsuarioDTO criarUsuarioDTO) {
+    public static Usuario toUsuario(CriarUsuarioDTO criarUsuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setUsuario(criarUsuarioDTO.getUsuario());
         usuario.setNome(criarUsuarioDTO.getNome());
         usuario.setSenha(criarUsuarioDTO.getSenha());
         usuario.setSenhaCriptografada(criarUsuarioDTO.getSenhaCriptografada());
         usuario.setEmail(criarUsuarioDTO.getEmail());
+        return usuario;
+    }
+
+    public static Usuario toUsuario(AtualizarUsuarioDTO atualizarUsuarioDTO) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(atualizarUsuarioDTO.getNome());
+        usuario.setSenha(atualizarUsuarioDTO.getSenha());
+        usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
+        usuario.setEmail(atualizarUsuarioDTO.getEmail());
         return usuario;
     }
 
