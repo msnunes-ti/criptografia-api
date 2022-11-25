@@ -42,7 +42,6 @@ public class UsuarioService {
             throw new RuntimeException("Usuário já cadastrado.");
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
-        usuario.setSenha();
         usuario.setIsAtivo(true);
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
