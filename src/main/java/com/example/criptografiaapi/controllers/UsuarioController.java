@@ -5,6 +5,7 @@ import com.example.criptografiaapi.dtos.UsuarioDTO;
 import com.example.criptografiaapi.services.UsuarioService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +16,8 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @GetMapping
-    public void buscarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        usuarioService.buscarPorUsuario(usuarioDTO.getUsuario());
+    public ResponseEntity<Object> buscarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        return usuarioService.buscarPorUsuario(usuarioDTO.getUsuario());
     }
 
     @PostMapping
