@@ -1,6 +1,7 @@
 package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
+import com.example.criptografiaapi.dtos.UsuarioDTO;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
@@ -15,18 +16,24 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Usuario buscarUsuario(String usuario) {
+    private Usuario buscarUsuario(String usuario) {
         return usuarioRepository.findByUsuario(usuario);
     }
 
-    public void criarUsuario(CriarUsuarioDTO criarUsuarioDTO) {
+    public Usuario buscarPorUsuario(String usuario) {
+        Usuario usuario1 = usuarioRepository.findByUsuario(usuario);
+        return usuario1;
+    }
+
+    public Usuario criarUsuario(CriarUsuarioDTO criarUsuarioDTO) {
         Usuario buscarUsuario = buscarUsuario(criarUsuarioDTO.getUsuario());
-        if (buscarUsuario != null) {
+        if (buscarUsuario.getUsuario().equalsIgnoreCase(criarUsuarioDTO.getUsuario())) {
             throw new RuntimeException("Usuário já cadastrado.");
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
         usuario.setIsAtivo(true);
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
+        return usuario;
     }
 }
