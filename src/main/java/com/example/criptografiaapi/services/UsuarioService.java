@@ -5,6 +5,7 @@ import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Getter
-@Setter
+@AllArgsConstructor
 public class UsuarioService {
 
     @Autowired
@@ -60,5 +60,6 @@ public class UsuarioService {
         usuario.get().setEmail(atualizarUsuarioDTO.getEmail());
         usuario.get().setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
         usuario.get().setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario.get());
     }
 }
