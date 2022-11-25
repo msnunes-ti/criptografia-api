@@ -36,7 +36,7 @@ public class UsuarioService {
         return null;
     }
 
-    public Usuario criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
+    public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
         Optional<Usuario> buscarUsuario = buscarUsuario(criarUsuarioDTO.getUsuario());
         if (buscarUsuario.get().getUsuario().equalsIgnoreCase(criarUsuarioDTO.getUsuario())) {
             throw new RuntimeException("Usuário já cadastrado.");
@@ -45,6 +45,7 @@ public class UsuarioService {
         usuario.setIsAtivo(true);
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
-        return usuario;
     }
+
+    public 
 }
