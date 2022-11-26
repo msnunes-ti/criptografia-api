@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class AtualizarUsuarioDTO {
 
+    String usuario;
+
     String nome;
 
     String senha;

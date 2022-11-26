@@ -3,7 +3,11 @@ package com.example.criptografiaapi.mappers;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioDTO;
+import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.models.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioMapper {
 
@@ -37,6 +41,19 @@ public class UsuarioMapper {
         usuarioDTO.setToken(usuario.getToken());
         usuarioDTO.setIsAtivo(usuario.getIsAtivo());
         return  usuarioDTO;
+    }
+
+    public static List<UsuarioSensivelDTO> toUsuarioSensivelDTOList(List<Usuario> usuarioList) {
+        List<UsuarioSensivelDTO> usuarioSensivelDTOList = new ArrayList<>();
+        for(Usuario u: usuarioList) {
+            UsuarioSensivelDTO usuarioSensivelDTO = new UsuarioSensivelDTO();
+            usuarioSensivelDTO.setId(u.getId());
+            usuarioSensivelDTO.setUsuario(u.getUsuario());
+            usuarioSensivelDTO.setNome(u.getNome());
+            usuarioSensivelDTO.setIsAtivo(u.getIsAtivo());
+            usuarioSensivelDTOList.add(usuarioSensivelDTO);
+        }
+        return usuarioSensivelDTOList;
     }
 
 }
