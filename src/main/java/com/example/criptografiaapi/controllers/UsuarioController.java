@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.controllers;
 
+import com.example.criptografiaapi.dtos.AtualizarSenhaCriptografadaUsuarioDTO;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
@@ -49,9 +50,9 @@ public class UsuarioController {
         usuarioService.atualizarUsuarioCompleto(id, atualizarUsuarioDTO);
     }
 
-    @PutMapping(path = "/usuario/{id}")
-    public void atualizarSenhaCriptografada(@PathVariable Long id, @RequestBody @NotNull AtualizaSenhaCriptografadaUsuarioDTO atualizaSenhaCriptografadaUsuarioDTO) {
-
+    @PatchMapping(path = "/{id}")
+    public void atualizarSenhaCriptografadaDoUsuario(@PathVariable Long id, @RequestBody @NotNull AtualizarSenhaCriptografadaUsuarioDTO atualizarSenhaCriptografadaUsuarioDTO) {
+        usuarioService.atualizarSenhaCriptografadaDoUsuario(id, atualizarSenhaCriptografadaUsuarioDTO);
     }
 
     @DeleteMapping(path = "/{id}")

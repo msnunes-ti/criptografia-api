@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.services;
 
+import com.example.criptografiaapi.dtos.AtualizarSenhaCriptografadaUsuarioDTO;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
@@ -66,6 +67,13 @@ public class UsuarioService {
         usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
         usuario.setEmail(atualizarUsuarioDTO.getEmail());
         usuario.setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
+        usuario.setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario);
+    }
+
+    public void atualizarSenhaCriptografadaDoUsuario(@NotNull Long id, @NotNull AtualizarSenhaCriptografadaUsuarioDTO atualizarSenhaCriptografadaUsuarioDTO) {
+        Usuario usuario = buscarUsuarioPeloId(id);
+        usuario.setSenhaCriptografada(atualizarSenhaCriptografadaUsuarioDTO.getSenhaCriptografada());
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
     }

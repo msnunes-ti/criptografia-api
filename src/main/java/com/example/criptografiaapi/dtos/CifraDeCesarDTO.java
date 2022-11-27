@@ -15,7 +15,5 @@ public class CifraDeCesarDTO {
 
     private String descricao;
 
-    private Integer senha;
-
     private LocalDateTime dataDaCodificacao;
 }

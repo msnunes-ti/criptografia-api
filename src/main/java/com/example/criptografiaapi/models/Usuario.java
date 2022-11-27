@@ -28,7 +28,7 @@ public class Usuario {
     String senha;
 
     @NotNull
-    String senhaCriptografada;
+    Integer senhaCriptografada;
 
     @NotNull
     String email;

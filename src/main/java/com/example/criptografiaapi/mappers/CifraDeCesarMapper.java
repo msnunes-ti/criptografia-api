@@ -15,7 +15,7 @@ public class CifraDeCesarMapper {
             CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
             cifraDeCesarDTO.setId(c.getId());
             cifraDeCesarDTO.setMensagem(c.getMensagem());
-            cifraDeCesarDTO.setSenha(c.getSenha());
+//            cifraDeCesarDTO.setSenha(c.getSenha());
             cifraDeCesarDTOList.add(cifraDeCesarDTO);
         }
         return cifraDeCesarDTOList;
@@ -26,7 +26,7 @@ public class CifraDeCesarMapper {
         cifraDeCesarDTO.setId(cifraDeCesar.getId());
         cifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
         cifraDeCesarDTO.setDescricao(cifraDeCesar.getDescricao());
-        cifraDeCesarDTO.setSenha(cifraDeCesar.getSenha());
+//        cifraDeCesarDTO.setSenha(cifraDeCesar.getSenha());
         cifraDeCesarDTO.setDataDaCodificacao(cifraDeCesar.getDataDaCodificacao());
         return cifraDeCesarDTO;
     }
@@ -35,7 +35,7 @@ public class CifraDeCesarMapper {
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
         cifraDeCesarDTO.setMensagem(decodificarCifraDeCesarDTO.getMensagem());
         cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
-        cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
+//        cifraDeCesarDTO.setSenha(decodificarCifraDeCesarDTO.getSenha());
         return cifraDeCesarDTO;
     }
 }

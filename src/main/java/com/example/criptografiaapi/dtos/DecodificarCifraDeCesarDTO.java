@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.dtos;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ public class DecodificarCifraDeCesarDTO {
 
     private String decricao;
 
-    private Integer senha;   
+    private Integer senhaCriptografa;
 
+//    @NotNull
+//    private Long usuarioId;
 }

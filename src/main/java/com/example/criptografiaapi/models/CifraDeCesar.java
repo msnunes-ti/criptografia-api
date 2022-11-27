@@ -19,17 +19,17 @@ public class CifraDeCesar {
     private Long id;
 
     @NotNull
-    @Column(name = "mensagem", length = 200)
+    @Column(name = "mensagem", length = 400)
     private String mensagem;
 
-    @Column(name = "descricao", length = 200)
+    @Column(name = "descricao", length = 100)
     private String descricao;
-
-    @NotNull
-    @Column(name = "senha")
-    private Integer senha;
 
     @NotNull
     @Column(name = "data_codificacao")
     private LocalDateTime dataDaCodificacao;
+
+    @NotNull
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 }

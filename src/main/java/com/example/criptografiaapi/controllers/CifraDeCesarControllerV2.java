@@ -23,8 +23,8 @@ public class CifraDeCesarControllerV2 {
     }
 
     @GetMapping(path = "/{id}")
-    public CifraDeCesarDTO buscarCifra(@PathVariable Long id, @RequestBody CifraDeCesarDTO cifraDeCesarDTO) {
-        return cifraDeCesarServiceV2.buscarCifra(id, cifraDeCesarDTO.getSenha());
+    public CifraDeCesarDTO buscarCifra(@PathVariable Long id) {
+        return cifraDeCesarServiceV2.buscarCifra(id);
     }
 
     @PostMapping(path = "/codificar")

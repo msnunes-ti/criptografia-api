@@ -5,17 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AtualizarUsuarioDTO {
-
-    String usuario;
-
-    String nome;
-
-    String senha;
+public class AtualizarSenhaCriptografadaUsuarioDTO {
 
     Integer senhaCriptografada;
-
-    String email;
-
-    Boolean isAtivo;
 }

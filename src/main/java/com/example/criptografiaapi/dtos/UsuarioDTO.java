@@ -17,7 +17,7 @@ public class UsuarioDTO {
 
     String senha;
 
-    String senhaCriptografada;
+    Integer senhaCriptografada;
 
     String email;
 

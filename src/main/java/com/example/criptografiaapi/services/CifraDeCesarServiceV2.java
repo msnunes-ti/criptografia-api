@@ -5,7 +5,9 @@ import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.models.CifraDeCesar;
+import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
+import com.example.criptografiaapi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -21,6 +24,8 @@ public class CifraDeCesarServiceV2 {
 
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     private CifraDeCesar buscarPeloId (Long id) {
         return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
@@ -30,15 +35,16 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
 
-    public CifraDeCesarDTO buscarCifra(Long id, int senha) {
-        return decodificarCifraDeCesarPersistida(id, senha);
+    public CifraDeCesarDTO buscarCifra(Long id) {
+        return decodificarCifraDeCesarPersistida(id); // colocar a senha contida no usuario
     }
 
-    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id, int senha) {
+    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id) {
         CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
+        Optional<Usuario> usuario = usuarioRepository.findById(cifraDeCesar.getUsuarioId());
         DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
         decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
-        decodificarCifraDeCesarDTO.setSenha(senha);
+        decodificarCifraDeCesarDTO.setSenhaCriptografa(usuario.get().getSenhaCriptografada());
         CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
         cifraDeCesarDTO.setId(cifraDeCesar.getId());
         cifraDeCesarDTO.setDescricao(cifraDeCesar.getDescricao());
@@ -52,14 +58,15 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO criptografar(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        if(codificarCifraDeCesarDTO.getSenha() < 0 || codificarCifraDeCesarDTO.getSenha() > 999999) {
+        Optional<Usuario> usuario = usuarioRepository.findById(codificarCifraDeCesarDTO.getUsuarioId());
+        if(usuario.get().getSenhaCriptografada() < 0 || usuario.get().getSenhaCriptografada() > 999999) {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
         List<String> rotorUm = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         List<String> rotorDois = Arrays.asList("h", "i", "w", "z", "o", "r", "x", "a", "b", "y", "v", "f", "t", "p", "e", "n", "u", "l", "c", "m", "q", "k", "s", "g", "j", "d");
         List<String> rotorTres = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
         List<List<String>> rotores = Arrays.asList(rotorUm, rotorDois, rotorTres);
-        int senha = codificarCifraDeCesarDTO.getSenha();
+        int senha = usuario.get().getSenhaCriptografada();
         List<Integer> senhaList = new ArrayList<>();
         do {
             senhaList.add(0, senha % 10);
@@ -96,7 +103,7 @@ public class CifraDeCesarServiceV2 {
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
         cifraDeCesar.setMensagem(mensagemCodificada.toString());
-        cifraDeCesar.setSenha(codificarCifraDeCesarDTO.getSenha());
+//        cifraDeCesar.setSenha(codificarCifraDeCesarDTO.getSenhaCriptografada());
         cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
         cifraDeCesar.setDescricao(codificarCifraDeCesarDTO.getDescricao());
         cifraDeCesarRepository.save(cifraDeCesar);
@@ -104,14 +111,14 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        if(decodificarCifraDeCesarDTO.getSenha() < 0 || decodificarCifraDeCesarDTO.getSenha() > 999999) {
+        if(decodificarCifraDeCesarDTO.getSenhaCriptografa() < 0 || decodificarCifraDeCesarDTO.getSenhaCriptografa() > 999999) {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
         List<String> rotorUm = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         List<String> rotorDois = Arrays.asList("h", "i", "w", "z", "o", "r", "x", "a", "b", "y", "v", "f", "t", "p", "e", "n", "u", "l", "c", "m", "q", "k", "s", "g", "j", "d");
         List<String> rotorTres = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
         List<List<String>> rotores = Arrays.asList(rotorUm, rotorDois, rotorTres);
-        int senha = decodificarCifraDeCesarDTO.getSenha();
+        int senha = decodificarCifraDeCesarDTO.getSenhaCriptografa();
         List<Integer> senhaList = new ArrayList<>();
         do {
             senhaList.add(0, senha % 10);
@@ -148,7 +155,7 @@ public class CifraDeCesarServiceV2 {
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
         cifraDeCesar.setMensagem(mensagemCodificada.toString());
-        cifraDeCesar.setSenha(decodificarCifraDeCesarDTO.getSenha());
+//        cifraDeCesar.setSenha(decodificarCifraDeCesarDTO.getSenha());
         cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
     }
