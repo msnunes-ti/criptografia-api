@@ -2,7 +2,6 @@ package com.example.criptografiaapi.controllers;
 
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
-import com.example.criptografiaapi.dtos.UsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.services.UsuarioService;
 import com.sun.istack.NotNull;
@@ -21,7 +20,7 @@ public class UsuarioController {
 
     @GetMapping(path = "/{usuario}")
     public ResponseEntity<Object> buscarUsuario(@PathVariable String usuario) {
-        return usuarioService.buscarPorUsuario(usuario);
+        return usuarioService.verificarSeExisteUsuario(usuario);
     }
 
     @GetMapping

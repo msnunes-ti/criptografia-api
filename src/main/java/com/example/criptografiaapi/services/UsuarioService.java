@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private Optional<Usuario> buscarUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsuario(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
@@ -36,13 +40,11 @@ public class UsuarioService {
         return  UsuarioMapper.toUsuarioSensivelDTOList(usuarioRepository.findAll());
     }
 
-    public ResponseEntity<Object> buscarPorUsuario(String usuario) {
+    public ResponseEntity<Object> verificarSeExisteUsuario(String usuario) {
         Optional<Usuario> usuario1 = usuarioRepository.findByUsuario(usuario);
         if (usuario1.isEmpty()) {
-            assert HttpStatus.resolve(204) != null;
             return new ResponseEntity<>(HttpStatus.resolve(204));
         }
-        assert HttpStatus.resolve(200) != null;
         return new ResponseEntity<>(HttpStatus.resolve(200));
     }
 
@@ -53,13 +55,14 @@ public class UsuarioService {
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
         usuario.setIsAtivo(true);
+        usuario.setSenha(bCryptPasswordEncoder.encode(criarUsuarioDTO.getSenha()));
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
     }
 
     public void atualizarUsuario(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
         Optional<Usuario> usuario = buscarUsuarioPeloId(id);
-        ResponseEntity<Object> usuario1 = buscarPorUsuario(atualizarUsuarioDTO.getUsuario());
+        ResponseEntity<Object> usuario1 = verificarSeExisteUsuario(atualizarUsuarioDTO.getUsuario());
         if(usuario1.getStatusCodeValue() == 200) {
             throw new RuntimeException("Esse usuário já está cadastrado.");
         }
