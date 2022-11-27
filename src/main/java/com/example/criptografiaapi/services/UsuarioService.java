@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,12 +27,12 @@ public class UsuarioService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private Optional<Usuario> buscarUsuario(String usuario) {
+    public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsuario(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
 
-    private Optional<Usuario> buscarUsuarioPeloId(Long id) {
-        return Optional.of(usuarioRepository.findById(id)).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+    public Usuario buscarUsuarioPeloId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
     public List<UsuarioSensivelDTO> buscarTodosUsuarios() {
@@ -43,6 +44,7 @@ public class UsuarioService {
         return usuarioEncontrado.isPresent();
     }
 
+    @Transactional
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
         Optional<Usuario> buscarUsuario = usuarioRepository.findByUsuario(criarUsuarioDTO.getUsuario());
         if (buscarUsuario.isPresent()) {
@@ -55,19 +57,21 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public void atualizarUsuario(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
-        Optional<Usuario> usuario = buscarUsuarioPeloId(id);
-        Boolean usuario1 = verificarSeExisteUsuario(atualizarUsuarioDTO.getUsuario());
-        if(usuario1) {
-            throw new RuntimeException("Esse usuário já está cadastrado.");
-        }
-        usuario.get().setUsuario(atualizarUsuarioDTO.getUsuario());
-        usuario.get().setNome(atualizarUsuarioDTO.getNome());
-        usuario.get().setSenha(atualizarUsuarioDTO.getSenha());
-        usuario.get().setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
-        usuario.get().setEmail(atualizarUsuarioDTO.getEmail());
-        usuario.get().setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
-        usuario.get().setToken(UUID.randomUUID());
-        usuarioRepository.save(usuario.get());
+    @Transactional
+    public void atualizarUsuarioCompleto(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
+        Usuario usuario = buscarUsuarioPeloId(id);
+        usuario.setUsuario(atualizarUsuarioDTO.getUsuario());
+        usuario.setNome(atualizarUsuarioDTO.getNome());
+        usuario.setSenha(atualizarUsuarioDTO.getSenha());
+        usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
+        usuario.setEmail(atualizarUsuarioDTO.getEmail());
+        usuario.setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
+        usuario.setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario);
+    }
+
+    public void deletarUsuario(Long id) {
+        Usuario usuario = buscarUsuarioPeloId(id);
+        usuarioRepository.delete(usuario);
     }
 }

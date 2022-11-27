@@ -56,5 +56,14 @@ public class UsuarioMapper {
         }
         return usuarioSensivelDTOList;
     }
+    public static UsuarioSensivelDTO toUsuarioSensivelDTO(Usuario usuario) {
+            UsuarioSensivelDTO usuarioSensivelDTO = new UsuarioSensivelDTO();
+            usuarioSensivelDTO.setId(usuario.getId());
+            usuarioSensivelDTO.setUsuario(usuario.getUsuario());
+            usuarioSensivelDTO.setNome(usuario.getNome());
+            usuarioSensivelDTO.setEmail(usuario.getEmail());
+            usuarioSensivelDTO.setIsAtivo(usuario.getIsAtivo());
+        return usuarioSensivelDTO;
+    }
 
 }
