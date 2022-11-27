@@ -42,15 +42,6 @@ public class CifraDeCesarServiceV2 {
         CifraDeCesar cifraDeCesar = buscarCifraPeloId(id);
         return decodificarCifraDeCesar(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesar));
     }
-//
-//    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id) {
-//        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
-//        Usuario usuario = buscarUsuarioPeloId(cifraDeCesar.getUsuarioId());
-//
-//
-//
-//        return cifraDeCesarDTO;
-//    }
 
     public static String removeAcentos(String letra) {
         String normalizer = Normalizer.normalize(letra, Normalizer.Form.NFD);
@@ -59,7 +50,7 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO criptografar(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        Usuario usuario = usuarioRepository.findById(codificarCifraDeCesarDTO.getUsuarioId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        Usuario usuario = buscarUsuarioPeloId(codificarCifraDeCesarDTO.getUsuarioId());
 
         if(usuario.getSenhaCriptografada() < 0 || usuario.getSenhaCriptografada() > 999999) {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
@@ -113,7 +104,7 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        Usuario usuario = usuarioRepository.findById(decodificarCifraDeCesarDTO.getUsuarioId()).orElseThrow();
+        Usuario usuario = buscarUsuarioPeloId(decodificarCifraDeCesarDTO.getUsuarioId());
         if(usuario.getSenhaCriptografada() < 0 || usuario.getSenhaCriptografada() > 999999) {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
