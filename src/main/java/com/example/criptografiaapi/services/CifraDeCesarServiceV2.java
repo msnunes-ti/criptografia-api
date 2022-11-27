@@ -148,7 +148,7 @@ public class CifraDeCesarServiceV2 {
             }
         }
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setId(cifraDeCesarDTO.getId());
+        cifraDeCesarDTO.setId(usuario.getId());
         cifraDeCesarDTO.setMensagem(mensagemDecodificada.toString());
         cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
         cifraDeCesarDTO.setDataDaCodificacao(decodificarCifraDeCesarDTO.getDataDaCodificacao());
