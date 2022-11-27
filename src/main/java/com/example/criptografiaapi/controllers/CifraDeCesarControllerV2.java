@@ -18,12 +18,12 @@ public class CifraDeCesarControllerV2 {
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
     @GetMapping
-    public List<CifraDeCesarDTO> buscarTodasCodificadas() {
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasCodificadas() {
         return cifraDeCesarServiceV2.buscarTodasCifradas();
     }
 
     @GetMapping(path = "/{id}")
-    public CifraDeCesarDTO buscarCifra(@PathVariable Long id) {
+    public CifraDeCesarDTO buscarCifraCodificada(@PathVariable Long id) {
         return cifraDeCesarServiceV2.buscarCifra(id);
     }
 
