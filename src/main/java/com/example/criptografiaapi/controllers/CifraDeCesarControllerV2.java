@@ -24,7 +24,7 @@ public class CifraDeCesarControllerV2 {
 
     @GetMapping(path = "/{id}")
     public CifraDeCesarDTO buscarCifraCodificada(@PathVariable Long id) {
-        return cifraDeCesarServiceV2.buscarCifra(id);
+        return cifraDeCesarServiceV2.buscarDecodificada(id);
     }
 
     @PostMapping(path = "/codificar")

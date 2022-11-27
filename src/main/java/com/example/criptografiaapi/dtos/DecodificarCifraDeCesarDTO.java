@@ -3,6 +3,8 @@ package com.example.criptografiaapi.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class DecodificarCifraDeCesarDTO {
@@ -12,4 +14,6 @@ public class DecodificarCifraDeCesarDTO {
     private String decricao;
 
     private Long usuarioId;
+
+    private LocalDateTime dataDaCodificacao;
 }

@@ -38,20 +38,19 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
 
-    public CifraDeCesarDTO buscarCifra(Long id) {
-        return decodificarCifraDeCesarPersistida(id); // colocar a senha contida no usuario
+    public CifraDeCesarDTO buscarDecodificada(Long id) {
+        CifraDeCesar cifraDeCesar = buscarCifraPeloId(id);
+        return decodificarCifraDeCesar(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesar));
     }
-
-    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id) {
-        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
-        Usuario usuario = buscarUsuarioPeloId(cifraDeCesar.getUsuarioId());
-        DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
-        decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
-        CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
-        cifraDeCesarDTO.setId(cifraDeCesar.getId());
-        cifraDeCesarDTO.setDescricao(cifraDeCesar.getDescricao());
-        return cifraDeCesarDTO;
-    }
+//
+//    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id) {
+//        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
+//        Usuario usuario = buscarUsuarioPeloId(cifraDeCesar.getUsuarioId());
+//
+//
+//
+//        return cifraDeCesarDTO;
+//    }
 
     public static String removeAcentos(String letra) {
         String normalizer = Normalizer.normalize(letra, Normalizer.Form.NFD);
@@ -130,7 +129,7 @@ public class CifraDeCesarServiceV2 {
         } while (senha > 0);
         int indiceSenha = 0;
         int indiceRotor = 0;
-        StringBuilder mensagemCodificada = new StringBuilder();
+        StringBuilder mensagemDecodificada = new StringBuilder();
         for (int i = 0; i < decodificarCifraDeCesarDTO.getMensagem().length(); i++) {
             int indiceLetra = 0;
             String letraParaCifrar = removeAcentos(String.valueOf(decodificarCifraDeCesarDTO.getMensagem().charAt(i)));
@@ -144,9 +143,9 @@ public class CifraDeCesarServiceV2 {
             while (indiceLetraCifrada < 0) {
                 indiceLetraCifrada += 26;
             }
-            if (letraParaCifrar.equals(" ")) { mensagemCodificada.append(" ");
+            if (letraParaCifrar.equals(" ")) { mensagemDecodificada.append(" ");
             } else {
-                mensagemCodificada.append(rotores.get(indiceRotor).get(indiceLetraCifrada));
+                mensagemDecodificada.append(rotores.get(indiceRotor).get(indiceLetraCifrada));
             }
             if (indiceSenha > 4) { indiceSenha = 0;
             } else {
@@ -157,11 +156,12 @@ public class CifraDeCesarServiceV2 {
                 indiceRotor++;
             }
         }
-        CifraDeCesar cifraDeCesar = new CifraDeCesar();
-        cifraDeCesar.setMensagem(mensagemCodificada.toString());
-        cifraDeCesar.setUsuarioId(usuario.getId());
-        cifraDeCesar.setDataDaCodificacao(LocalDateTime.now());
-        return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesar);
+        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
+        cifraDeCesarDTO.setId(cifraDeCesarDTO.getId());
+        cifraDeCesarDTO.setMensagem(mensagemDecodificada.toString());
+        cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
+        cifraDeCesarDTO.setDataDaCodificacao(decodificarCifraDeCesarDTO.getDataDaCodificacao());
+        return cifraDeCesarDTO;
     }
 
     public void deletarCifraDeCesar(Long id) {
