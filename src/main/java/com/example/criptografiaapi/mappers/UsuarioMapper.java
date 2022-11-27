@@ -50,6 +50,7 @@ public class UsuarioMapper {
             usuarioSensivelDTO.setId(u.getId());
             usuarioSensivelDTO.setUsuario(u.getUsuario());
             usuarioSensivelDTO.setNome(u.getNome());
+            usuarioSensivelDTO.setEmail(u.getEmail());
             usuarioSensivelDTO.setIsAtivo(u.getIsAtivo());
             usuarioSensivelDTOList.add(usuarioSensivelDTO);
         }

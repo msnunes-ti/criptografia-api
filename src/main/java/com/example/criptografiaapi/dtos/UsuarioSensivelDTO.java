@@ -13,5 +13,7 @@ public class UsuarioSensivelDTO {
 
     String nome;
 
+    String email;
+
     Boolean isAtivo;
 }

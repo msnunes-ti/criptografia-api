@@ -9,8 +9,6 @@ import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,17 +38,14 @@ public class UsuarioService {
         return  UsuarioMapper.toUsuarioSensivelDTOList(usuarioRepository.findAll());
     }
 
-    public ResponseEntity<Object> verificarSeExisteUsuario(String usuario) {
-        Optional<Usuario> usuario1 = usuarioRepository.findByUsuario(usuario);
-        if (usuario1.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.resolve(204));
-        }
-        return new ResponseEntity<>(HttpStatus.resolve(200));
+    public Boolean verificarSeExisteUsuario(String usuario) {
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsuario(usuario);
+        return usuarioEncontrado.isPresent();
     }
 
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
-        Optional<Usuario> buscarUsuario = buscarUsuario(criarUsuarioDTO.getUsuario());
-        if (buscarUsuario.get().getUsuario().equalsIgnoreCase(criarUsuarioDTO.getUsuario())) {
+        Optional<Usuario> buscarUsuario = usuarioRepository.findByUsuario(criarUsuarioDTO.getUsuario());
+        if (buscarUsuario.isPresent()) {
             throw new RuntimeException("Usuário já cadastrado.");
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
@@ -62,8 +57,8 @@ public class UsuarioService {
 
     public void atualizarUsuario(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
         Optional<Usuario> usuario = buscarUsuarioPeloId(id);
-        ResponseEntity<Object> usuario1 = verificarSeExisteUsuario(atualizarUsuarioDTO.getUsuario());
-        if(usuario1.getStatusCodeValue() == 200) {
+        Boolean usuario1 = verificarSeExisteUsuario(atualizarUsuarioDTO.getUsuario());
+        if(usuario1) {
             throw new RuntimeException("Esse usuário já está cadastrado.");
         }
         usuario.get().setUsuario(atualizarUsuarioDTO.getUsuario());

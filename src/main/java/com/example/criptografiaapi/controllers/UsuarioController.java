@@ -6,6 +6,7 @@ import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.services.UsuarioService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,11 @@ public class UsuarioController {
 
     @GetMapping(path = "/{usuario}")
     public ResponseEntity<Object> buscarUsuario(@PathVariable String usuario) {
-        return usuarioService.verificarSeExisteUsuario(usuario);
+        Boolean usuarioEncontrado = usuarioService.verificarSeExisteUsuario(usuario);
+        if (usuarioEncontrado) {
+            return new ResponseEntity<>(HttpStatus.resolve(200));
+        }
+        return new ResponseEntity<>(HttpStatus.resolve(204));
     }
 
     @GetMapping
