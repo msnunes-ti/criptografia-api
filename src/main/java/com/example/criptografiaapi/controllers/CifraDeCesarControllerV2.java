@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/v2/cifra")
+@RequestMapping(path = "/v2/cifras")
 public class CifraDeCesarControllerV2 {
 
     @Autowired
@@ -19,7 +19,7 @@ public class CifraDeCesarControllerV2 {
 
     @GetMapping
     public List<CifraDeCesarDTO> buscarTodasCodificadas() {
-        return cifraDeCesarServiceV2.buscarTodas();
+        return cifraDeCesarServiceV2.buscarTodasCifradas();
     }
 
     @GetMapping(path = "/{id}")

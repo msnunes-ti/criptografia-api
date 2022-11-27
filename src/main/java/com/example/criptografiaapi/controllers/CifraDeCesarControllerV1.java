@@ -22,10 +22,10 @@ public class CifraDeCesarControllerV1 {
         return cifraDeCesarService.buscarTodas();
     }
 
-    @GetMapping(path = "{id}")
-    public CifraDeCesarDTO buscarCifra(@PathVariable Long id) {
-        return cifraDeCesarService.buscarCifra(id);
-    }
+//    @GetMapping(path = "{id}")
+//    public CifraDeCesarDTO buscarCifra(@PathVariable Long id) {
+//        return cifraDeCesarService.buscarCifra(id);
+//    }
 
     @PostMapping(path = "/codificar")
     public @ResponseBody void codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
@@ -34,6 +34,6 @@ public class CifraDeCesarControllerV1 {
 
     @PostMapping(path = "/decodificar")
     public @ResponseBody CifraDeCesarDTO decodificarCifraDeCesar(@RequestBody @NotNull DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        return cifraDeCesarService.decodificarCifraDeCesar(decodificarCifraDeCesarDTO.getMensagem(), decodificarCifraDeCesarDTO.getSenhaCriptografa());
+        return cifraDeCesarService.decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
     }
 }
