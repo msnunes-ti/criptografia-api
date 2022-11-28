@@ -2,7 +2,6 @@ package com.example.criptografiaapi.controllers;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
-import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.services.CifraDeCesarServiceV2;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,12 @@ public class CifraDeCesarControllerV2 {
     }
 
     @GetMapping(path = "/usuario/{id}")
-    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuario(@PathVariable Long id) {
-        return cifraDeCesarServiceV2.buscarTodasCifradasDoUsuario(id);
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas(@PathVariable Long id) {
+        return cifraDeCesarServiceV2.buscarTodasAsCifrasDoUsuarioJaDecodificadas(id);
     }
 
     @GetMapping(path = "/{id}")
-    public CifraDeCesarDTO buscarCifraDecodificada(@PathVariable Long id) {
+    public CifraDeCesarDTO buscarCifraPorIdJaDecodificada(@PathVariable Long id) {
         return cifraDeCesarServiceV2.buscarDecodificada(id);
     }
 

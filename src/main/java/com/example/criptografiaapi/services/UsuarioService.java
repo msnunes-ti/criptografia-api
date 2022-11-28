@@ -1,9 +1,7 @@
 package com.example.criptografiaapi.services;
 
-import com.example.criptografiaapi.dtos.AtualizarSenhaCriptografadaUsuarioDTO;
-import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
-import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
-import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
+import com.example.criptografiaapi.dtos.*;
+import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
@@ -24,6 +22,9 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -73,9 +74,14 @@ public class UsuarioService {
 
     public void atualizarSenhaCriptografadaDoUsuario(@NotNull Long id, @NotNull AtualizarSenhaCriptografadaUsuarioDTO atualizarSenhaCriptografadaUsuarioDTO) {
         Usuario usuario = buscarUsuarioPeloId(id);
+        List<CifraDeCesarDTO> cifraDeCesarDTOList = cifraDeCesarServiceV2.buscarTodasAsCifrasDoUsuarioJaDecodificadas(usuario.getId());
         usuario.setSenhaCriptografada(atualizarSenhaCriptografadaUsuarioDTO.getSenhaCriptografada());
-        usuario.setToken(UUID.randomUUID());
-        usuarioRepository.save(usuario);
+        for(CifraDeCesarDTO c: cifraDeCesarDTOList) {
+            c.setMensagem(cifraDeCesarServiceV2.criptografar());
+        }
+
+
+//        usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {

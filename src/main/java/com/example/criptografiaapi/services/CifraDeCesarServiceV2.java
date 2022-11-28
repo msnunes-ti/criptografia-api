@@ -38,7 +38,7 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
 
-    public List<CifraDeCesarDTO> buscarTodasCifradasDoUsuario(Long id) {
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas(Long id) {
         List<CifraDeCesar> cifraDeCesarList = cifraDeCesarRepository.findAllByUsuarioId(id);
         List<CifraDeCesarDTO> cifraDeCesarDTOList = new ArrayList<>();
         for(CifraDeCesar c: cifraDeCesarList) {
