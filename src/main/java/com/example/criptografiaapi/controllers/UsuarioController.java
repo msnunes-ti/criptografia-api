@@ -52,7 +52,7 @@ public class UsuarioController {
 
     @PatchMapping(path = "/{id}")
     public void atualizarSenhaCriptografadaDoUsuario(@PathVariable Long id, @RequestBody @NotNull AtualizarSenhaCriptografadaUsuarioDTO atualizarSenhaCriptografadaUsuarioDTO) {
-        usuarioService.atualizarSenhaCriptografadaDoUsuario(id, atualizarSenhaCriptografadaUsuarioDTO);
+        usuarioService.atualizarSenhaCriptografadaDoUsuario(id, atualizarSenhaCriptografadaUsuarioDTO.getSenhaCriptografada());
     }
 
     @DeleteMapping(path = "/{id}")

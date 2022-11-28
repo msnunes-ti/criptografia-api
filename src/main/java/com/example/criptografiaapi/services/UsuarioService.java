@@ -1,9 +1,10 @@
 package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.*;
-import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
+import com.example.criptografiaapi.models.CifraDeCesar;
 import com.example.criptografiaapi.models.Usuario;
+import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,9 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    CifraDeCesarRepository cifraDeCesarRepository;
 
     @Autowired
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
@@ -59,29 +63,34 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    @Transactional
-    public void atualizarUsuarioCompleto(@NotNull Long id, @NotNull AtualizarUsuarioDTO atualizarUsuarioDTO) {
+    private void atualizaMensagensDoUsuario(Long id, Integer senhaCriptografadaAntiga, Integer senhaCriptografadaNova) {
+        List<CifraDeCesar> cifraDeCesarList = cifraDeCesarRepository.findAllByUsuarioId(id);
+        for (CifraDeCesar c: cifraDeCesarList) {
+            String mensagemDecodificada = cifraDeCesarServiceV2.decodificarMensagem(c.getMensagem(), senhaCriptografadaAntiga);
+            String mensagemRecodificada = cifraDeCesarServiceV2.criptografarMensagem(mensagemDecodificada, senhaCriptografadaNova);
+            c.setMensagem(mensagemRecodificada);
+            cifraDeCesarRepository.save(c);
+        }
+    }
+
+    public void atualizarUsuarioCompleto(Long id, AtualizarUsuarioDTO atualizarUsuarioDTO) {
         Usuario usuario = buscarUsuarioPeloId(id);
+        atualizaMensagensDoUsuario(usuario.getId(), usuario.getSenhaCriptografada(), atualizarUsuarioDTO.getSenhaCriptografada());
         usuario.setUsuario(atualizarUsuarioDTO.getUsuario());
         usuario.setNome(atualizarUsuarioDTO.getNome());
         usuario.setSenha(atualizarUsuarioDTO.getSenha());
-        usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
         usuario.setEmail(atualizarUsuarioDTO.getEmail());
+        usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
         usuario.setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
-        usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
     }
 
-    public void atualizarSenhaCriptografadaDoUsuario(@NotNull Long id, @NotNull AtualizarSenhaCriptografadaUsuarioDTO atualizarSenhaCriptografadaUsuarioDTO) {
+    public void atualizarSenhaCriptografadaDoUsuario(Long id, Integer senhaCriptografada) {
         Usuario usuario = buscarUsuarioPeloId(id);
-        List<CifraDeCesarDTO> cifraDeCesarDTOList = cifraDeCesarServiceV2.buscarTodasAsCifrasDoUsuarioJaDecodificadas(usuario.getId());
-        usuario.setSenhaCriptografada(atualizarSenhaCriptografadaUsuarioDTO.getSenhaCriptografada());
-        for(CifraDeCesarDTO c: cifraDeCesarDTOList) {
-            c.setMensagem(cifraDeCesarServiceV2.criptografar());
-        }
-
-
-//        usuarioRepository.save(usuario);
+        atualizaMensagensDoUsuario(usuario.getId(), usuario.getSenhaCriptografada(), senhaCriptografada);
+        usuario.setSenhaCriptografada(senhaCriptografada);
+        usuario.setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {

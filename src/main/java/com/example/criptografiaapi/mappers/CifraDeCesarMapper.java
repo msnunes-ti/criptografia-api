@@ -32,13 +32,13 @@ public class CifraDeCesarMapper {
         return cifraDeCesarDTO;
     }
 
-    public static CifraDeCesarDTO toCifraDeCesarDTO2(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setId(cifraDeCesarDTO.getId());
-        cifraDeCesarDTO.setMensagem(decodificarCifraDeCesarDTO.getMensagem());
-        cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
-        cifraDeCesarDTO.setDataDaCodificacao(decodificarCifraDeCesarDTO.getDataDaCodificacao());
-        return cifraDeCesarDTO;
+    public static CifraDeCesar toCifraDeCesar(CifraDeCesarDTO cifraDeCesarDTO) {
+        CifraDeCesar cifraDeCesar = new CifraDeCesar();
+        cifraDeCesar.setId(cifraDeCesarDTO.getId());
+        cifraDeCesar.setMensagem(cifraDeCesarDTO.getMensagem());
+        cifraDeCesar.setDescricao(cifraDeCesarDTO.getDescricao());
+        cifraDeCesar.setDataDaCodificacao(cifraDeCesarDTO.getDataDaCodificacao());
+        return cifraDeCesar;
     }
 
     public static DecodificarCifraDeCesarDTO toDecodificarCifraDeCesarDTO(CifraDeCesar cifraDeCesar) {

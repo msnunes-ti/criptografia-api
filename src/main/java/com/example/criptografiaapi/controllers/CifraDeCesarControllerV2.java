@@ -17,8 +17,8 @@ public class CifraDeCesarControllerV2 {
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
     @GetMapping
-    public List<CifraDeCesarDTO> buscarTodasAsCifrasCodificadas() {
-        return cifraDeCesarServiceV2.buscarTodasCifradas();
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
+        return cifraDeCesarServiceV2.buscarTodasAsCifrasAindaCodificadas();
     }
 
     @GetMapping(path = "/usuario/{id}")
@@ -33,7 +33,7 @@ public class CifraDeCesarControllerV2 {
 
     @PostMapping(path = "/codificar")
     public @ResponseBody CifraDeCesarDTO codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        return cifraDeCesarServiceV2.criptografar(codificarCifraDeCesarDTO);
+        return cifraDeCesarServiceV2.criptografarDepoisPersistir(codificarCifraDeCesarDTO);
     }
 
     @DeleteMapping(path = "/{id}")
