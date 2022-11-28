@@ -22,11 +22,6 @@ public class CifraDeCesarControllerV1 {
         return cifraDeCesarService.buscarTodas();
     }
 
-//    @GetMapping(path = "{id}")
-//    public CifraDeCesarDTO buscarCifra(@PathVariable Long id) {
-//        return cifraDeCesarService.buscarCifra(id);
-//    }
-
     @PostMapping(path = "/codificar")
     public @ResponseBody void codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
         cifraDeCesarService.codificarCifraDeCesar(codificarCifraDeCesarDTO);

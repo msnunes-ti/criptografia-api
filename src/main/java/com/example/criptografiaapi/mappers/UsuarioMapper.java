@@ -65,5 +65,4 @@ public class UsuarioMapper {
             usuarioSensivelDTO.setIsAtivo(usuario.getIsAtivo());
         return usuarioSensivelDTO;
     }
-
 }

@@ -13,9 +13,6 @@ public class CodificarCifraDeCesarDTO {
 
     private String descricao;
 
-//    @NotNull
-//    private Integer senhaCriptografada;
-
     @NotNull
     private Long usuarioId;
 }

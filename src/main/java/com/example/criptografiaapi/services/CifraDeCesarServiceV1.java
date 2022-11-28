@@ -43,7 +43,6 @@ public class CifraDeCesarServiceV1 {
         }
         CifraDeCesar cifraDeCesar = new CifraDeCesar();
         cifraDeCesar.setMensagem(textoCifrado.toString());
-//        cifraDeCesar.setSenha(codificarCifraDeCesarDTO.getSenhaCriptografada());
         cifraDeCesarRepository.save(cifraDeCesar);
     }
 
@@ -62,24 +61,11 @@ public class CifraDeCesarServiceV1 {
             texto.append((char) letraDecifradaASCII);
         }
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-//        cifraDeCesarDTO.setSenha(senha);
         cifraDeCesarDTO.setMensagem(texto.toString());
         return cifraDeCesarDTO;
     }
 
-//    public CifraDeCesarDTO decodificarCifraDeCesarPersistida(Long id) {
-//        CifraDeCesar cifraDeCesar = cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado!"));
-//        Optional<Usuario> usuario = usuarioRepository.findById(cifraDeCesar.getUsuarioId());
-//        CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(cifraDeCesar.getMensagem(), usuario.get().getSenhaCriptografada());
-//        cifraDeCesarDTO.setId(cifraDeCesar.getId());
-//        return cifraDeCesarDTO;
-//    }
-
     public List<CifraDeCesarDTO> buscarTodas() {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
-
-//    public CifraDeCesarDTO buscarCifra(Long id) {
-//        return decodificarCifraDeCesarPersistida(id);
-//    }
 }
