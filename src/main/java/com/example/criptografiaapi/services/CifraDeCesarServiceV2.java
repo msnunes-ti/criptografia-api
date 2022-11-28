@@ -38,6 +38,16 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
 
+    public List<CifraDeCesarDTO> buscarTodasCifradasDoUsuario(Long id) {
+        List<CifraDeCesar> cifraDeCesarList = cifraDeCesarRepository.findAllByUsuarioId(id);
+        List<CifraDeCesarDTO> cifraDeCesarDTOList = new ArrayList<>();
+        for(CifraDeCesar c: cifraDeCesarList) {
+            CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraDeCesar(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(c));
+            cifraDeCesarDTOList.add(cifraDeCesarDTO);
+        }
+        return cifraDeCesarDTOList;
+    }
+
     public CifraDeCesarDTO buscarDecodificada(Long id) {
         CifraDeCesar cifraDeCesar = buscarCifraPeloId(id);
         return decodificarCifraDeCesar(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesar));

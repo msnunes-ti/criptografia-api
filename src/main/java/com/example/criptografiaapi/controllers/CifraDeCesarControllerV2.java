@@ -22,19 +22,19 @@ public class CifraDeCesarControllerV2 {
         return cifraDeCesarServiceV2.buscarTodasCifradas();
     }
 
+    @GetMapping(path = "/usuario/{id}")
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuario(@PathVariable Long id) {
+        return cifraDeCesarServiceV2.buscarTodasCifradasDoUsuario(id);
+    }
+
     @GetMapping(path = "/{id}")
-    public CifraDeCesarDTO buscarCifraCodificada(@PathVariable Long id) {
+    public CifraDeCesarDTO buscarCifraDecodificada(@PathVariable Long id) {
         return cifraDeCesarServiceV2.buscarDecodificada(id);
     }
 
     @PostMapping(path = "/codificar")
     public @ResponseBody CifraDeCesarDTO codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
         return cifraDeCesarServiceV2.criptografar(codificarCifraDeCesarDTO);
-    }
-
-    @PostMapping(path = "/decodificar")
-    public @ResponseBody CifraDeCesarDTO decofificarCifraDeCesar(@RequestBody @NotNull DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        return cifraDeCesarServiceV2.decodificarCifraDeCesar(decodificarCifraDeCesarDTO);
     }
 
     @DeleteMapping(path = "/{id}")
