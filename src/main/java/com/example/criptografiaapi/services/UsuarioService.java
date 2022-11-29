@@ -46,7 +46,7 @@ public class UsuarioService {
     }
 
     public Boolean verificarSeExisteUsuario(String usuario) {
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsuario(usuario);
+        Optional<Usuario> usuarioEncontrado = buscarUsuarioPeloUsuario(usuario);
         return usuarioEncontrado.isPresent();
     }
 

@@ -53,7 +53,7 @@ public class CifraDeCesarServiceV2 {
         return decodificarCifraPersistida(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesar));
     }
 
-    public static String removeAcentos(String letra) {
+    public static String removerAcentos(String letra) {
         String normalizer = Normalizer.normalize(letra, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalizer).replaceAll("");
@@ -89,7 +89,7 @@ public class CifraDeCesarServiceV2 {
         StringBuilder mensagemCodificada = new StringBuilder();
         for (int i = 0; i < mensagem.length(); i++) {
             int indiceLetra = 0;
-            String letraParaCifrar = removeAcentos(String.valueOf(mensagem.charAt(i)));
+            String letraParaCifrar = removerAcentos(String.valueOf(mensagem.charAt(i)));
             for (int j = 0; j < rotorUm.size(); j++) {
                 if (rotores.get(indiceRotor).get(j).equalsIgnoreCase(letraParaCifrar)) {
                     indiceLetra = j;
@@ -144,7 +144,7 @@ public class CifraDeCesarServiceV2 {
         StringBuilder mensagemDecodificada = new StringBuilder();
         for (int i = 0; i < mensagem.length(); i++) {
             int indiceLetra = 0;
-            String letraParaCifrar = removeAcentos(String.valueOf(mensagem.charAt(i)));
+            String letraParaCifrar = removerAcentos(String.valueOf(mensagem.charAt(i)));
             for (int j = 0; j < rotorUm.size(); j++) {
                 if (rotores.get(indiceRotor).get(j).equalsIgnoreCase(letraParaCifrar)) {
                     indiceLetra = j;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @Deprecated
 @RestController
-@RequestMapping(path = "/v1/cifra")
+@RequestMapping(path = "/v1/cifras")
 public class CifraDeCesarControllerV1 {
 
     @Autowired
