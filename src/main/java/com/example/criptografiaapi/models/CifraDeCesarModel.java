@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "cifra_cesar")
-public class CifraDeCesar {
+public class CifraDeCesarModel {
 
     @Id
     @NotNull

@@ -3,16 +3,16 @@ package com.example.criptografiaapi.mappers;
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
-import com.example.criptografiaapi.models.CifraDeCesar;
+import com.example.criptografiaapi.models.CifraDeCesarModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CifraDeCesarMapper {
 
-    public static List<CifraDeCesarDTO> toCifraDeCesarDTOList(List<CifraDeCesar> cifraDeCesarList) {
+    public static List<CifraDeCesarDTO> toCifraDeCesarDTOList(List<CifraDeCesarModel> cifraDeCesarModelList) {
         List<CifraDeCesarDTO> cifraDeCesarDTOList = new ArrayList<>();
-        for (CifraDeCesar c : cifraDeCesarList) {
+        for (CifraDeCesarModel c : cifraDeCesarModelList) {
             CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
             cifraDeCesarDTO.setId(c.getId());
             cifraDeCesarDTO.setMensagem(c.getMensagem());
@@ -23,30 +23,30 @@ public class CifraDeCesarMapper {
         return cifraDeCesarDTOList;
     }
 
-    public static CifraDeCesarDTO toCifraDeCesarDTO(CifraDeCesar cifraDeCesar) {
+    public static CifraDeCesarDTO toCifraDeCesarDTO(CifraDeCesarModel cifraDeCesarModel) {
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setId(cifraDeCesar.getId());
-        cifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
-        cifraDeCesarDTO.setDescricao(cifraDeCesar.getDescricao());
-        cifraDeCesarDTO.setDataDaCodificacao(cifraDeCesar.getDataDaCodificacao());
+        cifraDeCesarDTO.setId(cifraDeCesarModel.getId());
+        cifraDeCesarDTO.setMensagem(cifraDeCesarModel.getMensagem());
+        cifraDeCesarDTO.setDescricao(cifraDeCesarModel.getDescricao());
+        cifraDeCesarDTO.setDataDaCodificacao(cifraDeCesarModel.getDataDaCodificacao());
         return cifraDeCesarDTO;
     }
 
-    public static CifraDeCesar toCifraDeCesar(CifraDeCesarDTO cifraDeCesarDTO) {
-        CifraDeCesar cifraDeCesar = new CifraDeCesar();
-        cifraDeCesar.setId(cifraDeCesarDTO.getId());
-        cifraDeCesar.setMensagem(cifraDeCesarDTO.getMensagem());
-        cifraDeCesar.setDescricao(cifraDeCesarDTO.getDescricao());
-        cifraDeCesar.setDataDaCodificacao(cifraDeCesarDTO.getDataDaCodificacao());
-        return cifraDeCesar;
+    public static CifraDeCesarModel toCifraDeCesar(CifraDeCesarDTO cifraDeCesarDTO) {
+        CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
+        cifraDeCesarModel.setId(cifraDeCesarDTO.getId());
+        cifraDeCesarModel.setMensagem(cifraDeCesarDTO.getMensagem());
+        cifraDeCesarModel.setDescricao(cifraDeCesarDTO.getDescricao());
+        cifraDeCesarModel.setDataDaCodificacao(cifraDeCesarDTO.getDataDaCodificacao());
+        return cifraDeCesarModel;
     }
 
-    public static DecodificarCifraDeCesarDTO toDecodificarCifraDeCesarDTO(CifraDeCesar cifraDeCesar) {
+    public static DecodificarCifraDeCesarDTO toDecodificarCifraDeCesarDTO(CifraDeCesarModel cifraDeCesarModel) {
         DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
-        decodificarCifraDeCesarDTO.setMensagem(cifraDeCesar.getMensagem());
-        decodificarCifraDeCesarDTO.setDecricao(cifraDeCesar.getDescricao());
-        decodificarCifraDeCesarDTO.setUsuarioId(cifraDeCesar.getUsuarioId());
-        decodificarCifraDeCesarDTO.setDataDaCodificacao(cifraDeCesar.getDataDaCodificacao());
+        decodificarCifraDeCesarDTO.setMensagem(cifraDeCesarModel.getMensagem());
+        decodificarCifraDeCesarDTO.setDecricao(cifraDeCesarModel.getDescricao());
+        decodificarCifraDeCesarDTO.setUsuarioId(cifraDeCesarModel.getUsuarioId());
+        decodificarCifraDeCesarDTO.setDataDaCodificacao(cifraDeCesarModel.getDataDaCodificacao());
         return decodificarCifraDeCesarDTO;
     }
 

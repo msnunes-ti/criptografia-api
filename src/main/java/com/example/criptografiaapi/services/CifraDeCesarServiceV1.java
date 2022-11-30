@@ -4,8 +4,8 @@ import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
-import com.example.criptografiaapi.models.CifraDeCesar;
-import com.example.criptografiaapi.models.Usuario;
+import com.example.criptografiaapi.models.CifraDeCesarModel;
+import com.example.criptografiaapi.models.UsuarioModel;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class CifraDeCesarServiceV1 {
     UsuarioRepository usuarioRepository;
 
     public void codificarCifraDeCesar(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        Optional<Usuario> usuario = usuarioRepository.findById(codificarCifraDeCesarDTO.getUsuarioId());
+        Optional<UsuarioModel> usuario = usuarioRepository.findById(codificarCifraDeCesarDTO.getUsuarioId());
         if(usuario.get().getSenhaCriptografada() > 99 || usuario.get().getSenhaCriptografada() < 1) {
             throw new RuntimeException("A senha deve estar entre 0 e 99");
         }
@@ -41,13 +41,13 @@ public class CifraDeCesarServiceV1 {
             }
             textoCifrado.append((char) letraCifradaASCII);
         }
-        CifraDeCesar cifraDeCesar = new CifraDeCesar();
-        cifraDeCesar.setMensagem(textoCifrado.toString());
-        cifraDeCesarRepository.save(cifraDeCesar);
+        CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
+        cifraDeCesarModel.setMensagem(textoCifrado.toString());
+        cifraDeCesarRepository.save(cifraDeCesarModel);
     }
 
     public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        Optional<Usuario> usuario = usuarioRepository.findById(decodificarCifraDeCesarDTO.getUsuarioId());
+        Optional<UsuarioModel> usuario = usuarioRepository.findById(decodificarCifraDeCesarDTO.getUsuarioId());
         if(usuario.get().getSenhaCriptografada() > 99 || usuario.get().getSenhaCriptografada() < 1) {
             throw new RuntimeException("A senha deve estar entre 0 e 99!");
         }

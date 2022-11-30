@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class Usuario {
+public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +42,9 @@ public class Usuario {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Usuario)) return false;
-        Usuario usuario1 = (Usuario) o;
-        return Objects.equals(getUsuario(), usuario1.getUsuario());
+        if (!(o instanceof UsuarioModel)) return false;
+        UsuarioModel usuarioModel1 = (UsuarioModel) o;
+        return Objects.equals(getUsuario(), usuarioModel1.getUsuario());
     }
 
     @Override
