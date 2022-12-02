@@ -12,8 +12,8 @@ public class DetalheUsuarioData implements UserDetails {
 
     private final Optional<Usuario> usuario;
 
-    public DetalheUsuarioData(Optional<Usuario> usuarioModel) {
-        this.usuario = usuarioModel;
+    public DetalheUsuarioData(Optional<Usuario> usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -23,12 +23,12 @@ public class DetalheUsuarioData implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuario.get().getPassword();
+        return usuario.orElse(usuario.orElse(new Usuario())).getPassword();
     }
 
     @Override
     public String getUsername() {
-        return usuario.get().getUsername();
+        return usuario.orElse(new Usuario()).getUsername();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class DetalheUsuarioData implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return usuario.get().getIsAtivo();
-    }
+        return true;
+    } //    public boolean isEnabled() {return usuario.get().getIsAtivo();} -> Trocar por essa!
 }
