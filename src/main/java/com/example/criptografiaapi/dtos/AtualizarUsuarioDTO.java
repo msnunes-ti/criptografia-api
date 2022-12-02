@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 public class AtualizarUsuarioDTO {
 
-    String usuario;
+    String username;
 
     String nome;
 
-    String senha;
+    String password;
 
     Integer senhaCriptografada;
 

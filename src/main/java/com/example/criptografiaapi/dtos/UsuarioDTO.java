@@ -11,11 +11,11 @@ public class UsuarioDTO {
 
     Long id;
 
-    String usuario;
+    String username;
 
     String nome;
 
-    String senha;
+    String password;
 
     Integer senhaCriptografada;
 

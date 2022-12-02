@@ -9,7 +9,7 @@ public class UsuarioSensivelDTO {
 
     Long id;
 
-    String usuario;
+    String username;
 
     String nome;
 

@@ -1,7 +1,7 @@
 package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.data.DetalheUsuarioData;
-import com.example.criptografiaapi.models.UsuarioModel;
+import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +19,7 @@ public class DetalheUsuarioServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<UsuarioModel> usuario = usuarioRepository.findByUsuario(userName);
+        Optional<Usuario> usuario = usuarioRepository.findByUsername(userName);
         if(usuario.isEmpty()) {
             throw new UsernameNotFoundException("Usuário ["+ userName + "] não encontrado.");
         }

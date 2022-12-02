@@ -1,8 +1,6 @@
 package com.example.criptografiaapi.data;
 
-import com.example.criptografiaapi.models.UsuarioModel;
-import com.example.criptografiaapi.services.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.criptografiaapi.models.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,10 +10,10 @@ import java.util.Optional;
 
 public class DetalheUsuarioData implements UserDetails {
 
-    private final Optional<UsuarioModel> usuarioModel;
+    private final Optional<Usuario> usuario;
 
-    public DetalheUsuarioData(Optional<UsuarioModel> usuarioModel) {
-        this.usuarioModel = usuarioModel;
+    public DetalheUsuarioData(Optional<Usuario> usuarioModel) {
+        this.usuario = usuarioModel;
     }
 
     @Override
@@ -25,12 +23,12 @@ public class DetalheUsuarioData implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuarioModel.get().getSenha();
+        return usuario.get().getPassword();
     }
 
     @Override
     public String getUsername() {
-        return usuarioModel.get().getUsuario();
+        return usuario.get().getUsername();
     }
 
     @Override
@@ -50,6 +48,6 @@ public class DetalheUsuarioData implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return usuarioModel.get().getIsAtivo();
+        return usuario.get().getIsAtivo();
     }
 }

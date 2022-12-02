@@ -9,13 +9,13 @@ import lombok.Setter;
 public class CriarUsuarioDTO {
 
     @NotNull
-    String usuario;
+    String username;
 
     @NotNull
     String nome;
 
     @NotNull
-    String senha;
+    String password;
 
     @NotNull
     Integer senhaCriptografada;

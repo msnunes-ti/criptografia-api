@@ -3,7 +3,7 @@ package com.example.criptografiaapi.services;
 import com.example.criptografiaapi.dtos.*;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
-import com.example.criptografiaapi.models.UsuarioModel;
+import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
@@ -33,11 +33,11 @@ public class UsuarioService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Optional<UsuarioModel> buscarUsuarioPeloUsuario(String usuario) {
-        return Optional.ofNullable(usuarioRepository.findByUsuario(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
+    public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
+        return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
 
-    public UsuarioModel buscarUsuarioPeloId(Long id) {
+    public Usuario buscarUsuarioPeloId(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
@@ -46,21 +46,21 @@ public class UsuarioService {
     }
 
     public Boolean verificarSeExisteUsuario(String usuario) {
-        Optional<UsuarioModel> usuarioEncontrado = buscarUsuarioPeloUsuario(usuario);
+        Optional<Usuario> usuarioEncontrado = buscarUsuarioPeloUsuario(usuario);
         return usuarioEncontrado.isPresent();
     }
 
     @Transactional
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
-        Optional<UsuarioModel> buscarUsuario = usuarioRepository.findByUsuario(criarUsuarioDTO.getUsuario());
-        if (buscarUsuario.isPresent()) {
+        Optional<Usuario> usuarioBuscado = usuarioRepository.findByUsername(criarUsuarioDTO.getUsername());
+        if (usuarioBuscado.isPresent()) {
             throw new RuntimeException("Usuário já cadastrado.");
         }
-        UsuarioModel usuarioModel = UsuarioMapper.toUsuario(criarUsuarioDTO);
-        usuarioModel.setIsAtivo(true);
-        usuarioModel.setSenha(bCryptPasswordEncoder.encode(criarUsuarioDTO.getSenha()));
-        usuarioModel.setToken(UUID.randomUUID());
-        usuarioRepository.save(usuarioModel);
+        Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
+        usuario.setIsAtivo(true);
+        usuario.setPassword(bCryptPasswordEncoder.encode(criarUsuarioDTO.getPassword()));
+        usuario.setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario);
     }
 
     private void atualizaMensagensDoUsuario(Long id, Integer senhaCriptografadaAntiga, Integer senhaCriptografadaNova) {
@@ -74,27 +74,27 @@ public class UsuarioService {
     }
 
     public void atualizarUsuarioCompleto(Long id, AtualizarUsuarioDTO atualizarUsuarioDTO) {
-        UsuarioModel usuarioModel = buscarUsuarioPeloId(id);
-        atualizaMensagensDoUsuario(usuarioModel.getId(), usuarioModel.getSenhaCriptografada(), atualizarUsuarioDTO.getSenhaCriptografada());
-        usuarioModel.setUsuario(atualizarUsuarioDTO.getUsuario());
-        usuarioModel.setNome(atualizarUsuarioDTO.getNome());
-        usuarioModel.setSenha(atualizarUsuarioDTO.getSenha());
-        usuarioModel.setEmail(atualizarUsuarioDTO.getEmail());
-        usuarioModel.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
-        usuarioModel.setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
-        usuarioRepository.save(usuarioModel);
+        Usuario usuario = buscarUsuarioPeloId(id);
+        atualizaMensagensDoUsuario(usuario.getId(), usuario.getSenhaCriptografada(), atualizarUsuarioDTO.getSenhaCriptografada());
+        usuario.setUsername(atualizarUsuarioDTO.getUsername());
+        usuario.setNome(atualizarUsuarioDTO.getNome());
+        usuario.setPassword(atualizarUsuarioDTO.getPassword());
+        usuario.setEmail(atualizarUsuarioDTO.getEmail());
+        usuario.setSenhaCriptografada(atualizarUsuarioDTO.getSenhaCriptografada());
+        usuario.setIsAtivo(atualizarUsuarioDTO.getIsAtivo());
+        usuarioRepository.save(usuario);
     }
 
     public void atualizarSenhaCriptografadaDoUsuario(Long id, Integer senhaCriptografada) {
-        UsuarioModel usuarioModel = buscarUsuarioPeloId(id);
-        atualizaMensagensDoUsuario(usuarioModel.getId(), usuarioModel.getSenhaCriptografada(), senhaCriptografada);
-        usuarioModel.setSenhaCriptografada(senhaCriptografada);
-        usuarioModel.setToken(UUID.randomUUID());
-        usuarioRepository.save(usuarioModel);
+        Usuario usuario = buscarUsuarioPeloId(id);
+        atualizaMensagensDoUsuario(usuario.getId(), usuario.getSenhaCriptografada(), senhaCriptografada);
+        usuario.setSenhaCriptografada(senhaCriptografada);
+        usuario.setToken(UUID.randomUUID());
+        usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {
-        UsuarioModel usuarioModel = buscarUsuarioPeloId(id);
-        usuarioRepository.delete(usuarioModel);
+        Usuario usuario = buscarUsuarioPeloId(id);
+        usuarioRepository.delete(usuario);
     }
 }

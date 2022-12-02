@@ -5,7 +5,7 @@ import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
-import com.example.criptografiaapi.models.UsuarioModel;
+import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.services.UsuarioService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,12 @@ public class UsuarioController {
 
     @GetMapping(path = "/validarSenha")
     public ResponseEntity<Boolean> validarSenha(@RequestParam String usuario, @RequestParam String senha){
-        Optional<UsuarioModel> usuarioBuscado = usuarioService.buscarUsuarioPeloUsuario(usuario);
+        Optional<Usuario> usuarioBuscado = usuarioService.buscarUsuarioPeloUsuario(usuario);
         if(usuarioBuscado.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
-        UsuarioModel usuarioModelEncontrado = usuarioBuscado.get();
-        Boolean valid = bCryptPasswordEncoder.matches(senha, usuarioModelEncontrado.getSenha());
+        Usuario usuarioEncontrado = usuarioBuscado.get();
+        Boolean valid = bCryptPasswordEncoder.matches(senha, usuarioEncontrado.getPassword());
         HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }

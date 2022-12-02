@@ -2,9 +2,8 @@ package com.example.criptografiaapi.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.criptografiaapi.config.SegurancaConfig;
 import com.example.criptografiaapi.data.DetalheUsuarioData;
-import com.example.criptografiaapi.models.UsuarioModel;
+import com.example.criptografiaapi.models.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,10 +37,10 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            UsuarioModel usuario = new ObjectMapper().readValue(request.getInputStream(), UsuarioModel.class);
+            Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    usuario.getUsuario(),
-                    usuario.getSenha(),
+                    usuario.getUsername(),
+                    usuario.getPassword(),
                     new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException("Falha ao autenticar", e);

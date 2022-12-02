@@ -1,6 +1,5 @@
 package com.example.criptografiaapi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class UsuarioModel {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +19,14 @@ public class UsuarioModel {
 
     @NotNull
     @Column(unique = true)
-    String usuario;
+    String username;
 
     @NotNull
     String nome;
 
     @NotNull
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String senha;
+    String password;
 
     @NotNull
     Integer senhaCriptografada;
@@ -44,13 +43,13 @@ public class UsuarioModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UsuarioModel)) return false;
-        UsuarioModel usuarioModel1 = (UsuarioModel) o;
-        return Objects.equals(getUsuario(), usuarioModel1.getUsuario());
+        if (!(o instanceof Usuario)) return false;
+        Usuario usuario1 = (Usuario) o;
+        return Objects.equals(getUsername(), usuario1.getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsuario());
+        return Objects.hash(getUsername());
     }
 }

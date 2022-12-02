@@ -5,7 +5,7 @@ import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
-import com.example.criptografiaapi.models.UsuarioModel;
+import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CifraDeCesarServiceV2 {
         return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
     }
 
-    private UsuarioModel buscarUsuarioPeloId(Long id) {
+    private Usuario buscarUsuarioPeloId(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
     }
 
@@ -60,10 +60,10 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO criptografarDepoisPersistir(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        UsuarioModel usuarioModel = buscarUsuarioPeloId(codificarCifraDeCesarDTO.getUsuarioId());
+        Usuario usuario = buscarUsuarioPeloId(codificarCifraDeCesarDTO.getUsuarioId());
         CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
-        cifraDeCesarModel.setMensagem(criptografarMensagem(codificarCifraDeCesarDTO.getMensagem(), usuarioModel.getSenhaCriptografada()));
-        cifraDeCesarModel.setUsuarioId(usuarioModel.getId());
+        cifraDeCesarModel.setMensagem(criptografarMensagem(codificarCifraDeCesarDTO.getMensagem(), usuario.getSenhaCriptografada()));
+        cifraDeCesarModel.setUsuarioId(usuario.getId());
         cifraDeCesarModel.setDataDaCodificacao(LocalDateTime.now());
         cifraDeCesarModel.setDescricao(codificarCifraDeCesarDTO.getDescricao());
         cifraDeCesarRepository.save(cifraDeCesarModel);
@@ -117,10 +117,10 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO decodificarCifraPersistida(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        UsuarioModel usuarioModel = buscarUsuarioPeloId(decodificarCifraDeCesarDTO.getUsuarioId());
+        Usuario usuario = buscarUsuarioPeloId(decodificarCifraDeCesarDTO.getUsuarioId());
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setId(usuarioModel.getId());
-        cifraDeCesarDTO.setMensagem(decodificarMensagem(decodificarCifraDeCesarDTO.getMensagem(), usuarioModel.getSenhaCriptografada()));
+        cifraDeCesarDTO.setId(usuario.getId());
+        cifraDeCesarDTO.setMensagem(decodificarMensagem(decodificarCifraDeCesarDTO.getMensagem(), usuario.getSenhaCriptografada()));
         cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
         cifraDeCesarDTO.setDataDaCodificacao(decodificarCifraDeCesarDTO.getDataDaCodificacao());
         return cifraDeCesarDTO;
