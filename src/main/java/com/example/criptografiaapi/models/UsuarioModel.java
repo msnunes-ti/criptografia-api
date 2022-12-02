@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class UsuarioModel {
     String nome;
 
     @NotNull
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String senha;
 
     @NotNull
