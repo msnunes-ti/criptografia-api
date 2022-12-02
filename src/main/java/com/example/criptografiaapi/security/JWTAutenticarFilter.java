@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,6 +25,10 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    public static final int TOKEN_EXPIRACAO = 900_000;
+
+    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 
     public JWTAutenticarFilter(AuthenticationManager authenticationManager) {
 
@@ -53,8 +56,8 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
         DetalheUsuarioData usuarioData = (DetalheUsuarioData) authResult.getPrincipal();
         String token = JWT.create()
                 .withSubject(usuarioData.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SegurancaConfig.TOKEN_EXPIRACAO))
-                .sign(Algorithm.HMAC512(SegurancaConfig.TOKEN_SENHA));
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWTAutenticarFilter.TOKEN_EXPIRACAO))
+                .sign(Algorithm.HMAC512(JWTAutenticarFilter.TOKEN_SENHA));
         response.getWriter().write(token);
         response.getWriter().flush();
     }
