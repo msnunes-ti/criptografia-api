@@ -12,4 +12,8 @@ public class SegurancaConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    public static final int TOKEN_EXPIRACAO = 900_000;
+
+    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 }
