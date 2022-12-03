@@ -50,7 +50,6 @@ public class UsuarioService {
         return usuarioEncontrado.isPresent();
     }
 
-    @Transactional
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
         Optional<Usuario> usuarioBuscado = usuarioRepository.findByUsername(criarUsuarioDTO.getUsername());
         if (usuarioBuscado.isPresent()) {
