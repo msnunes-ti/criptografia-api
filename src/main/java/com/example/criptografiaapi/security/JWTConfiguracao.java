@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -37,8 +38,8 @@ public class JWTConfiguracao extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAutenticarFilter(authenticationManager()))
-                .addFilter(new JWTValidarFilter(authenticationManager()));
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Em caso de produção, deve estar habilitado!
+                .addFilter(new JWTValidarFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Em caso de produção, deve estar habilitado!
     }
 
     @Bean                                            // Para habilitar acesso de fora, se for usar somente na rede, pode remover este Bean.
