@@ -28,13 +28,13 @@ public class UsuarioController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping(path = "/validarSenha")
-    public ResponseEntity<Boolean> validarSenha(@RequestParam String usuario, @RequestParam String senha){
-        Optional<Usuario> usuarioBuscado = usuarioService.buscarUsuarioPeloUsuario(usuario);
+    public ResponseEntity<Boolean> validarSenha(@RequestParam String username, @RequestParam String password){
+        Optional<Usuario> usuarioBuscado = usuarioService.buscarUsuarioPeloUsuario(username);
         if(usuarioBuscado.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
         Usuario usuarioEncontrado = usuarioBuscado.get();
-        Boolean valid = bCryptPasswordEncoder.matches(senha, usuarioEncontrado.getPassword());
+        Boolean valid = bCryptPasswordEncoder.matches(password, usuarioEncontrado.getPassword());
         HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
     }
