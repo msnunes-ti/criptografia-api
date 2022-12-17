@@ -1,6 +1,5 @@
 package com.example.criptografiaapi.services;
 
-import com.example.criptografiaapi.config.JWTUtil;
 import com.example.criptografiaapi.dtos.*;
 import com.example.criptografiaapi.exceptions.CriptografiaApiException;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
@@ -11,12 +10,9 @@ import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,8 +33,8 @@ public class UsuarioService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    JWTUtil jwtUtil;
+//    @Autowired
+//    JWTUtil jwtUtil;
 
     public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
@@ -57,15 +53,15 @@ public class UsuarioService {
         return usuarioEncontrado.isPresent();
     }
 
-    public TokenDTO fazerLogin(String username, String password) {
-        Usuario usuarioBuscado = buscarUsuarioPeloUsuario(username).orElseThrow(CriptografiaApiException::new);
-        boolean valid = bCryptPasswordEncoder.matches(password, usuarioBuscado.getPassword());
-        if(!valid) {
-            throw new CriptografiaApiException();
-        }
-        String token = jwtUtil.generateToken(usuarioBuscado);
-        return TokenDTO.builder().token(token).build();
-    }
+//    public TokenDTO fazerLogin(String username, String password) {
+//        Usuario usuarioBuscado = buscarUsuarioPeloUsuario(username).orElseThrow(CriptografiaApiException::new);
+//        boolean valid = bCryptPasswordEncoder.matches(password, usuarioBuscado.getPassword());
+//        if(!valid) {
+//            throw new CriptografiaApiException();
+//        }
+//        String token = jwtUtil.generateToken(usuarioBuscado);
+//        return TokenDTO.builder().token(token).build();
+//    }
 
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
         Optional<Usuario> usuarioBuscado = usuarioRepository.findByUsername(criarUsuarioDTO.getUsername());

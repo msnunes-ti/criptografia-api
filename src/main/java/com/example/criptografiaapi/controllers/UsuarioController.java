@@ -1,14 +1,15 @@
 package com.example.criptografiaapi.controllers;
 
-import com.example.criptografiaapi.dtos.*;
-import com.example.criptografiaapi.exceptions.CriptografiaApiException;
+import com.example.criptografiaapi.dtos.AtualizarSenhaCriptografadaUsuarioDTO;
+import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
+import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
+import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.services.UsuarioService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,19 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping(path = "/validarSenha")
-    public ResponseEntity<TokenDTO> validarSenha(@RequestParam String username, @RequestParam String password){
-        try {
-            TokenDTO tokenDTO = usuarioService.fazerLogin(username, password);
-            return ResponseEntity.ok(tokenDTO);
-        }
-        catch (CriptografiaApiException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
+//    @GetMapping(path = "/validarSenha")
+//    public ResponseEntity<TokenDTO> validarSenha(@RequestParam String username, @RequestParam String password){
+//        try {
+//            TokenDTO tokenDTO = usuarioService.fazerLogin(username, password);
+//            return ResponseEntity.ok(tokenDTO);
+//        }
+//        catch (CriptografiaApiException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//    }
 
     @GetMapping
     public List<UsuarioSensivelDTO> usuarioSensivelDTOList() {
