@@ -23,7 +23,7 @@ public class UsuarioController {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping(path = "/validarSenha")
+    @GetMapping(path = "/validar-senha")
     public ResponseEntity<TokenDTO> validarSenha(@RequestParam String username, @RequestParam String password){
         try {
             TokenDTO tokenDTO = usuarioService.fazerLogin(username, password);
@@ -44,7 +44,7 @@ public class UsuarioController {
         return UsuarioMapper.toUsuarioSensivelDTO(usuarioService.buscarUsuarioPeloId(id));
     }
 
-    @GetMapping(path = "/usuario/{usuario}")
+    @GetMapping(path = "/existe/{usuario}")
     public ResponseEntity<Object> verificarSeExisteUsuario(@PathVariable String usuario) {
         Boolean usuarioEncontrado = usuarioService.verificarSeExisteUsuario(usuario);
         if (usuarioEncontrado) {

@@ -1,6 +1,7 @@
 package com.example.criptografiaapi.models;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -47,6 +49,18 @@ public class Usuario implements UserDetails, Serializable {
     @NotNull
     Boolean isAtivo;
 
+    @ManyToMany
+    @JoinTable(name = "tb_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleModel> roles;
+
+    public Usuario() {
+    }
+
+    public Usuario(String username, String password, Boolean isAtivo, boolean b, boolean b1, boolean b2, Collection<? extends GrantedAuthority> authorities) {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,7 +76,7 @@ public class Usuario implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles;
     }
 
     @Override
