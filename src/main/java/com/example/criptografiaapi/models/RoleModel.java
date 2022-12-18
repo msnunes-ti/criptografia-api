@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -14,8 +13,6 @@ import java.io.Serializable;
 @Setter
 @Table(name = "tb_role")
 public class RoleModel implements GrantedAuthority, Serializable {
-
-    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
