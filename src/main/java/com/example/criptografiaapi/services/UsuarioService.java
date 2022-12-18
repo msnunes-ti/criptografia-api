@@ -2,9 +2,7 @@ package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
-import com.example.criptografiaapi.dtos.TokenDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
-import com.example.criptografiaapi.exceptions.CriptografiaApiException;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
 import com.example.criptografiaapi.models.Usuario;
