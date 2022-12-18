@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "cifra_cesar")
-public class CifraDeCesarModel {
+public class CifraDeCesarModel{
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @NotNull

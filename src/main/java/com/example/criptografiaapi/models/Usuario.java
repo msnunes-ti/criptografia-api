@@ -3,15 +3,23 @@ package com.example.criptografiaapi.models;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class Usuario {
+public class Usuario implements UserDetails, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +33,6 @@ public class Usuario {
     String nome;
 
     @NotNull
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
     @NotNull
@@ -52,4 +59,41 @@ public class Usuario {
     public int hashCode() {
         return Objects.hash(getUsername());
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isAtivo;
+    }
+
+
 }

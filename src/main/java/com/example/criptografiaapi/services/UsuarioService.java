@@ -2,7 +2,9 @@ package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
+import com.example.criptografiaapi.dtos.TokenDTO;
 import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
+import com.example.criptografiaapi.exceptions.CriptografiaApiException;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
 import com.example.criptografiaapi.models.Usuario;
@@ -11,7 +13,7 @@ import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class UsuarioService {
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    PasswordEncoder passwordEncoder;
 
     public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
@@ -51,15 +53,15 @@ public class UsuarioService {
         return usuarioEncontrado.isPresent();
     }
 
-//    public TokenDTO fazerLogin(String username, String password) {
-//        Usuario usuarioBuscado = buscarUsuarioPeloUsuario(username).orElseThrow(CriptografiaApiException::new);
-//        boolean valid = bCryptPasswordEncoder.matches(password, usuarioBuscado.getPassword());
-//        if(!valid) {
-//            throw new CriptografiaApiException();
-//        }
-//        String token = jwtUtil.generateToken(usuarioBuscado);
-//        return TokenDTO.builder().token(token).build();
-//    }
+    public TokenDTO fazerLogin(String username, String password) {
+        Usuario usuarioBuscado = buscarUsuarioPeloUsuario(username).orElseThrow(CriptografiaApiException::new);
+        boolean valid = passwordEncoder.matches(password, usuarioBuscado.getPassword());
+        if(!valid) {
+            throw new CriptografiaApiException();
+        }
+        String token = " ";  //String token = jwtUtil.generateToken(usuarioBuscado);
+        return TokenDTO.builder().token(token).build();
+    }
 
     public void criarUsuario(@NotNull CriarUsuarioDTO criarUsuarioDTO) {
         Optional<Usuario> usuarioBuscado = usuarioRepository.findByUsername(criarUsuarioDTO.getUsername());
@@ -68,7 +70,7 @@ public class UsuarioService {
         }
         Usuario usuario = UsuarioMapper.toUsuario(criarUsuarioDTO);
         usuario.setIsAtivo(true);
-        usuario.setPassword(bCryptPasswordEncoder.encode(criarUsuarioDTO.getPassword()));
+        usuario.setPassword(passwordEncoder.encode(criarUsuarioDTO.getPassword()));
         usuario.setToken(UUID.randomUUID());
         usuarioRepository.save(usuario);
     }
