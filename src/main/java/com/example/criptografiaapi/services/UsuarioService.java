@@ -1,6 +1,9 @@
 package com.example.criptografiaapi.services;
 
-import com.example.criptografiaapi.dtos.*;
+import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
+import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
+import com.example.criptografiaapi.dtos.TokenDTO;
+import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
 import com.example.criptografiaapi.exceptions.CriptografiaApiException;
 import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
@@ -32,9 +35,6 @@ public class UsuarioService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
-//    @Autowired
-//    JWTUtil jwtUtil;
 
     public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
