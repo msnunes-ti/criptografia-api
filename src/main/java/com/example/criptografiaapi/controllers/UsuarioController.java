@@ -25,6 +25,12 @@ public class UsuarioController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PreAuthorize("hasAnyRole('ROLE_CONVIDADO', 'ROLE_USER', 'ROLE_ADMIN')")
+    @PostMapping(path = "/login")
+    public TokenDTO fazerLogin(FazerLoginDTO fazerLoginDTO) {
+        return usuarioService.fazerLogin(fazerLoginDTO.getUsername(), fazerLoginDTO.getPassword());
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_CONVIDADO', 'ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping(path = "/validar-senha")
     public ResponseEntity<TokenDTO> validarSenha(@RequestParam String username, @RequestParam String password){
         try {
