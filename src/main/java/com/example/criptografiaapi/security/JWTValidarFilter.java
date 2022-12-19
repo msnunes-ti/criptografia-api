@@ -2,7 +2,6 @@ package com.example.criptografiaapi.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.criptografiaapi.models.Usuario;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,17 +41,13 @@ public class JWTValidarFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
         String token = atributo.replace(ATRIBUTO_PREFIXO, "");
-
         UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(token);
-
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-
         String usuario = JWT.require(Algorithm.HMAC512(JWTAutenticarFilter.tokenSecret))
                 .build()
                 .verify(token)
