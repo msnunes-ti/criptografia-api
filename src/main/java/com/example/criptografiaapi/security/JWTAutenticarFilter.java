@@ -29,14 +29,14 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    @Value("${springbootjjwt.jjwt.secret}")
-    public static String secret;
+    @Value("${springbootjjwt.jjwt.tokenSecret}")
+    public static String tokenSecret;
 
 //    @Value("${springbootjjwt.expiration}")
 //    public static String expirationTime;
 
-    public static final int TOKEN_EXPIRACAO = 900_000;
 //    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
+public static final int TOKEN_EXPIRACAO = 900_000;
 
     public JWTAutenticarFilter(AuthenticationManager authenticationManager, AuthenticationManager authenticationManager1) {
         super(authenticationManager);
@@ -66,7 +66,7 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(usuarioData.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRACAO))
-                .sign(Algorithm.HMAC512(secret));
+                .sign(Algorithm.HMAC512(tokenSecret));
         response.getWriter().write(token);
         response.getWriter().flush();
     }
