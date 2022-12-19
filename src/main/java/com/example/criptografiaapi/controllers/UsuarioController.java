@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasAnyRole('ROLE_CONVIDADO', 'ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping(path = "/login")
-    public TokenDTO fazerLogin(FazerLoginDTO fazerLoginDTO) {
+    public TokenDTO fazerLogin(@RequestBody FazerLoginDTO fazerLoginDTO) {
         return usuarioService.fazerLogin(fazerLoginDTO.getUsername(), fazerLoginDTO.getPassword());
     }
 

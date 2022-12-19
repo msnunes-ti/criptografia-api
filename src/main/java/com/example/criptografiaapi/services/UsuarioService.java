@@ -2,7 +2,6 @@ package com.example.criptografiaapi.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.criptografiaapi.config.JWTUtil;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.TokenDTO;
@@ -41,9 +40,6 @@ public class UsuarioService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    JWTUtil jwtUtil;
-
     public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
@@ -67,11 +63,10 @@ public class UsuarioService {
         if(!valid) {
             throw new CriptografiaApiException();
         }
-        String token = jwtUtil.generateToken(usuarioBuscado);
 
-//        String token = JWT.create().withSubject(usuarioBuscado.getUsername())
-//                .withExpiresAt(new Date(System.currentTimeMillis() + JWTAutenticarFilter.TOKEN_EXPIRACAO))
-//                .sign(Algorithm.HMAC512(password));
+        String token = JWT.create().withSubject(usuarioBuscado.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWTAutenticarFilter.TOKEN_EXPIRACAO))
+                .sign(Algorithm.HMAC512(password));
         return TokenDTO.builder().token(token).build();
     }
 
