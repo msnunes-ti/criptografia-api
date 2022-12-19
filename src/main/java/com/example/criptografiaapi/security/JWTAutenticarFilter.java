@@ -7,11 +7,13 @@ import com.example.criptografiaapi.models.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,12 +24,19 @@ import java.util.Date;
 
 @Getter
 @Setter
+@Transactional
 public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
+    @Value("${springbootjjwt.jjwt.secret}")
+    public static String secret;
+
+//    @Value("${springbootjjwt.expiration}")
+//    public static String expirationTime;
+
     public static final int TOKEN_EXPIRACAO = 900_000;
-    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
+//    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 
     public JWTAutenticarFilter(AuthenticationManager authenticationManager, AuthenticationManager authenticationManager1) {
         super(authenticationManager);
@@ -57,7 +66,7 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(usuarioData.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRACAO))
-                .sign(Algorithm.HMAC512(TOKEN_SENHA));
+                .sign(Algorithm.HMAC512(secret));
         response.getWriter().write(token);
         response.getWriter().flush();
     }
