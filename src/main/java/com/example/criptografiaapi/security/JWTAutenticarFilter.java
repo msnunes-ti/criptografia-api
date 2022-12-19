@@ -29,9 +29,6 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
     public static final int TOKEN_EXPIRACAO = 900_000;
     public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 
-    public JWTAutenticarFilter() {
-    }
-
     public JWTAutenticarFilter(AuthenticationManager authenticationManager, AuthenticationManager authenticationManager1) {
         super(authenticationManager);
         this.authenticationManager = authenticationManager1;

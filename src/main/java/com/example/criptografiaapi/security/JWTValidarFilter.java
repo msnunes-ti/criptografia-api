@@ -22,7 +22,6 @@ public class JWTValidarFilter extends BasicAuthenticationFilter {
     }
 
     public static final String HEADER_ATRIBUTO = "Authorization";
-
     public static final String ATRIBUTO_PREFIXO = "Bearer ";
 
     public JWTValidarFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint) {
