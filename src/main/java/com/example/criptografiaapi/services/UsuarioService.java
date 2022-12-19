@@ -1,7 +1,6 @@
 package com.example.criptografiaapi.services;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.example.criptografiaapi.config.JWTUtil;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.TokenDTO;
@@ -12,14 +11,12 @@ import com.example.criptografiaapi.models.CifraDeCesarModel;
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.CifraDeCesarRepository;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
-import com.example.criptografiaapi.security.JWTAutenticarFilter;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -60,10 +57,7 @@ public class UsuarioService {
         if(!valid) {
             throw new CriptografiaApiException();
         }
-
-        String token = JWT.create().withSubject(usuarioBuscado.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWTAutenticarFilter.TOKEN_EXPIRACAO))
-                .sign(Algorithm.HMAC512(password));
+        String token = JWTUtil.generateToken(usuarioBuscado);
         return TokenDTO.builder().token(token).build();
     }
 

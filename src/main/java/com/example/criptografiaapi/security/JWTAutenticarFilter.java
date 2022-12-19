@@ -33,10 +33,8 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
     public static String tokenSecret;
 
 //    @Value("${springbootjjwt.expiration}")
-//    public static String expirationTime;
-
-//    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
-public static final int TOKEN_EXPIRACAO = 900_000;
+//    public static final int expirationTime;
+    public static final int TOKEN_EXPIRACAO = 900_000;
 
     public JWTAutenticarFilter(AuthenticationManager authenticationManager, AuthenticationManager authenticationManager1) {
         super(authenticationManager);
