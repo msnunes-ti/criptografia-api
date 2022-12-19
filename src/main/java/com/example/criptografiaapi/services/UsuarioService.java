@@ -30,13 +30,10 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
-
     @Autowired
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
-
     @Autowired
     PasswordEncoder passwordEncoder;
 

@@ -46,6 +46,5 @@ public class CifraDeCesarControllerV2 {
     public void deletarCifraDeCesar(@PathVariable Long id){
         cifraDeCesarServiceV2.deletarCifraDeCesar(id);
     }
-
 }
 
