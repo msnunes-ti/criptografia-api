@@ -14,14 +14,13 @@ import java.util.Map;
 @Component
 public class JWTUtil {
 
-//    @Value("${springbootjjwt.jjwt.secret}")
+//    @Value("${springbootjjwt.jjwt.token-secret}")
 //    public static String secret;
+    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 
 //    @Value("${springbootjjwt.expiration}")
 //    private static String expirationTime;
-
     public static final int TOKEN_EXPIRACAO = 900_000;
-    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
 
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(TOKEN_SENHA).build().parseClaimsJws(token).getBody();

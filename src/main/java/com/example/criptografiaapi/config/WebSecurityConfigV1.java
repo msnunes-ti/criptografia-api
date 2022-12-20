@@ -1,5 +1,6 @@
 package com.example.criptografiaapi.config;
 
+import com.example.criptografiaapi.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 //@Configuration
 @Deprecated
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfigV1 extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {

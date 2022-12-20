@@ -1,4 +1,4 @@
-package com.example.criptografiaapi.config;
+package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
@@ -20,6 +20,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário: " + username + ", Não encontrado"));
-        return new User(usuario.getUsername(), usuario.getPassword(), usuario.getIsAtivo(), true, true, true, usuario.getAuthorities());
+        return new User(usuario.getUsername(),
+                usuario.getPassword(),
+                usuario.getIsAtivo(),
+                true,
+                true,
+                true,
+                usuario.getAuthorities());
     }
 }
