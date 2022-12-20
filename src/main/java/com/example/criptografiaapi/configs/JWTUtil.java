@@ -1,10 +1,9 @@
-package com.example.criptografiaapi.config;
+package com.example.criptografiaapi.configs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.example.criptografiaapi.models.Usuario;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -22,16 +21,16 @@ public class JWTUtil {
 //    private static String expirationTime;
     public static final int TOKEN_EXPIRACAO = 900_000;
 
-    public Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(TOKEN_SENHA).build().parseClaimsJws(token).getBody();
+    public Map<String, Claim> getAllClaimsFromToken(String token) {
+        return JWT.decode(token).getClaims();
     }
 
     public String getUsernameFromToken(String token) {
-        return getAllClaimsFromToken(token).getSubject();
+        return getAllClaimsFromToken(token).get("username").asString();
     }
 
     public Date getExpirationDateFromToken(String token) {
-        return getAllClaimsFromToken(token).getExpiration();
+        return JWT.decode(token).getExpiresAt();
     }
 
     private Boolean isTokenExpired(String token) {

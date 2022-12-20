@@ -1,6 +1,6 @@
 package com.example.criptografiaapi.services;
 
-import com.example.criptografiaapi.config.JWTUtil;
+import com.example.criptografiaapi.configs.JWTUtil;
 import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
 import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
 import com.example.criptografiaapi.dtos.TokenDTO;
