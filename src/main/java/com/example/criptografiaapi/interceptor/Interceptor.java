@@ -27,7 +27,9 @@ public class Interceptor implements HandlerInterceptor {
             return false;
         }
         String token = request.getHeader("Authorization");
-        var tokenSeparado = token.split(" ");
+        String[] tokenSeparado = token.split(" ");
+        System.out.println("Username: " + jwtUtil.getUsernameFromToken(tokenSeparado[1]));
+
         if(tokenSeparado.length != 2 || !tokenSeparado[0].equals("Bearer")){
             response.setStatus(401);
             return false;
@@ -36,7 +38,7 @@ public class Interceptor implements HandlerInterceptor {
             response.setStatus(401);
             return false;
         }
-//        System.out.println(jwtUtil.getUsernameFromToken(token));
+
         return true; //inserir: true, para ele chegar até o Controller, se for: false, ele já retorna um erro e nem chega ao Controller.
     }
 

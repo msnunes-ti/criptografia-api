@@ -34,6 +34,9 @@ public class UsuarioService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JWTUtil jwtUtil;
+
     public Optional<Usuario> buscarUsuarioPeloUsuario(String usuario) {
         return Optional.ofNullable(usuarioRepository.findByUsername(usuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado!")));
     }
@@ -57,7 +60,7 @@ public class UsuarioService {
         if(!valid) {
             throw new CriptografiaApiException();
         }
-        String token = JWTUtil.generateToken(usuarioBuscado);
+        String token = jwtUtil.generateToken(usuarioBuscado);
         return TokenDTO.builder().token(token).build();
     }
 

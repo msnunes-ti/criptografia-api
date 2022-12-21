@@ -2,8 +2,8 @@ package com.example.criptografiaapi.configs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
 import com.example.criptografiaapi.models.Usuario;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,20 +13,19 @@ import java.util.Map;
 @Component
 public class JWTUtil {
 
-//    @Value("${springbootjjwt.jjwt.token-secret}")
-//    public static String secret;
-    public static final String TOKEN_SENHA = "c87a404c-f386-4961-be31-30b29287d316";
+    @Value("${springbootjjwt.jjwt.token-secret}")
+    private String tokenSecret;
 
-//    @Value("${springbootjjwt.expiration}")
-//    private static String expirationTime;
-    public static final int TOKEN_EXPIRACAO = 900_000;
+    @Value("${springbootjjwt.expiration}")
+    private String expirationTokenTime;
 
-    public Map<String, Claim> getAllClaimsFromToken(String token) {
-        return JWT.decode(token).getClaims();
+    public Map<String, Object> getAllClaimsFromToken(String token) {
+        return new HashMap<>(JWT.decode(token).getClaims());
     }
 
     public String getUsernameFromToken(String token) {
-        return getAllClaimsFromToken(token).get("username").asString();
+        Map<String, Object> claims = getAllClaimsFromToken(token);
+        return claims.get("sub").toString();
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -38,15 +37,17 @@ public class JWTUtil {
         return expiration.before(new Date());
     }
 
-    public static String generateToken(Usuario usuario) {
+    public String generateToken(Usuario usuario) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", usuario.getId());
         claims.put("username", usuario.getUsername());
         claims.put("email", usuario.getEmail());
         return doGenerateToken(claims, usuario.getUsername());
     }
 
-    private static String doGenerateToken(Map<String, Object> claims, String username) {
-        long expirationTimeLong = Long.parseLong(String.valueOf(TOKEN_EXPIRACAO));
+    private String doGenerateToken(Map<String, Object> claims, String username) {
+
+        long expirationTimeLong = Long.parseLong(String.valueOf(expirationTokenTime));
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong);
         return JWT.create()
@@ -54,7 +55,7 @@ public class JWTUtil {
                 .withSubject(username)
                 .withIssuedAt(createdDate)
                 .withExpiresAt(expirationDate)
-                .sign(Algorithm.HMAC256(TOKEN_SENHA));
+                .sign(Algorithm.HMAC256(tokenSecret));
     }
 
     public Boolean validateToken(String token) {
