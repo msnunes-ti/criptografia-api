@@ -1,9 +1,6 @@
 package com.example.criptografiaapi.mappers;
 
-import com.example.criptografiaapi.dtos.AtualizarUsuarioDTO;
-import com.example.criptografiaapi.dtos.CriarUsuarioDTO;
-import com.example.criptografiaapi.dtos.UsuarioDTO;
-import com.example.criptografiaapi.dtos.UsuarioSensivelDTO;
+import com.example.criptografiaapi.dtos.*;
 import com.example.criptografiaapi.models.Usuario;
 
 import java.util.ArrayList;
@@ -57,12 +54,22 @@ public class UsuarioMapper {
         return usuarioSensivelDTOList;
     }
     public static UsuarioSensivelDTO toUsuarioSensivelDTO(Usuario usuario) {
-            UsuarioSensivelDTO usuarioSensivelDTO = new UsuarioSensivelDTO();
-            usuarioSensivelDTO.setId(usuario.getId());
-            usuarioSensivelDTO.setUsername(usuario.getUsername());
-            usuarioSensivelDTO.setNome(usuario.getNome());
-            usuarioSensivelDTO.setEmail(usuario.getEmail());
-            usuarioSensivelDTO.setIsAtivo(usuario.getIsAtivo());
+        UsuarioSensivelDTO usuarioSensivelDTO = new UsuarioSensivelDTO();
+        usuarioSensivelDTO.setId(usuario.getId());
+        usuarioSensivelDTO.setUsername(usuario.getUsername());
+        usuarioSensivelDTO.setNome(usuario.getNome());
+        usuarioSensivelDTO.setEmail(usuario.getEmail());
+        usuarioSensivelDTO.setIsAtivo(usuario.getIsAtivo());
         return usuarioSensivelDTO;
+    }
+
+    public static UsuarioLogadoDTO toUsuarioLogadoDTO(Usuario usuario) {
+        UsuarioLogadoDTO usuarioLogadoDTO = new UsuarioLogadoDTO();
+        usuarioLogadoDTO.setId(usuario.getId());
+        usuarioLogadoDTO.setUsername(usuario.getUsername());
+        usuarioLogadoDTO.setNome(usuario.getNome());
+        usuarioLogadoDTO.setSenhaCriptografada(usuario.getSenhaCriptografada());
+        usuarioLogadoDTO.setEmail(usuario.getEmail());
+        return usuarioLogadoDTO;
     }
 }

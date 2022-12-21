@@ -1,6 +1,10 @@
 package com.example.criptografiaapi.interceptor;
 
 import com.example.criptografiaapi.configs.JWTUtil;
+import com.example.criptografiaapi.dtos.UsuarioLogadoDTO;
+import com.example.criptografiaapi.mappers.UsuarioMapper;
+import com.example.criptografiaapi.models.Usuario;
+import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,6 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 public class Interceptor implements HandlerInterceptor {
 
     JWTUtil jwtUtil;
+
+    UsuarioRepository usuarioRepository;
+
+    UsuarioLogadoDTO usuarioLogadoDTO;
+
+    public Interceptor(JWTUtil jwtUtil, UsuarioLogadoDTO usuarioLogadoDTO, UsuarioRepository usuarioRepository) {
+        this.jwtUtil = jwtUtil;
+        this.usuarioLogadoDTO = usuarioLogadoDTO;
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -28,7 +42,7 @@ public class Interceptor implements HandlerInterceptor {
         }
         String token = request.getHeader("Authorization");
         String[] tokenSeparado = token.split(" ");
-        System.out.println("Username: " + jwtUtil.getUsernameFromToken(tokenSeparado[1]));
+//        System.out.println("Username: " + jwtUtil.getUsernameFromToken(tokenSeparado[1]));
 
         if(tokenSeparado.length != 2 || !tokenSeparado[0].equals("Bearer")){
             response.setStatus(401);
@@ -38,7 +52,9 @@ public class Interceptor implements HandlerInterceptor {
             response.setStatus(401);
             return false;
         }
-
+        Usuario usuario = usuarioRepository.findByUsername(jwtUtil.getUsernameFromToken(tokenSeparado[1]))
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        usuarioLogadoDTO = UsuarioMapper.toUsuarioLogadoDTO(usuario);
         return true; //inserir: true, para ele chegar até o Controller, se for: false, ele já retorna um erro e nem chega ao Controller.
     }
 
