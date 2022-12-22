@@ -17,16 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Interceptor implements HandlerInterceptor {
 
     JWTUtil jwtUtil;
-
-    UsuarioRepository usuarioRepository;
-
     UsuarioLogadoDTO usuarioLogadoDTO;
-
-    public Interceptor(JWTUtil jwtUtil, UsuarioLogadoDTO usuarioLogadoDTO, UsuarioRepository usuarioRepository) {
-        this.jwtUtil = jwtUtil;
-        this.usuarioLogadoDTO = usuarioLogadoDTO;
-        this.usuarioRepository = usuarioRepository;
-    }
+    UsuarioRepository usuarioRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -42,8 +34,6 @@ public class Interceptor implements HandlerInterceptor {
         }
         String token = request.getHeader("Authorization");
         String[] tokenSeparado = token.split(" ");
-//        System.out.println("Username: " + jwtUtil.getUsernameFromToken(tokenSeparado[1]));
-
         if(tokenSeparado.length != 2 || !tokenSeparado[0].equals("Bearer")){
             response.setStatus(401);
             return false;
@@ -52,9 +42,11 @@ public class Interceptor implements HandlerInterceptor {
             response.setStatus(401);
             return false;
         }
-        Usuario usuario = usuarioRepository.findByUsername(jwtUtil.getUsernameFromToken(tokenSeparado[1]))
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        String username = jwtUtil.getUsernameFromToken(tokenSeparado[1]).replace("\"", "");
+        System.out.println("Username: " + username);
+        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         usuarioLogadoDTO = UsuarioMapper.toUsuarioLogadoDTO(usuario);
+        System.out.println(usuarioLogadoDTO);
         return true; //inserir: true, para ele chegar até o Controller, se for: false, ele já retorna um erro e nem chega ao Controller.
     }
 

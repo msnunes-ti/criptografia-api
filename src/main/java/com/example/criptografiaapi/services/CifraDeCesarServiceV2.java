@@ -3,6 +3,7 @@ package com.example.criptografiaapi.services;
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.UsuarioLogadoDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
 import com.example.criptografiaapi.models.Usuario;
@@ -24,10 +25,13 @@ public class CifraDeCesarServiceV2 {
     @Autowired
     CifraDeCesarRepository cifraDeCesarRepository;
     @Autowired
+    UsuarioLogadoDTO usuarioLogadoDTO;
+    @Autowired
     UsuarioRepository usuarioRepository;
 
     private CifraDeCesarModel buscarCifraPeloId(Long id) {
-        return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
+        return cifraDeCesarRepository.findById(usuarioLogadoDTO.getId()).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
+//        return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
     }
 
     private Usuario buscarUsuarioPeloId(Long id) {
@@ -53,7 +57,7 @@ public class CifraDeCesarServiceV2 {
         return decodificarCifraPersistida(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesarModel));
     }
 
-    public static String removerAcentos(String letra) {
+    private static String removerAcentos(String letra) {
         String normalizer = Normalizer.normalize(letra, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalizer).replaceAll("");

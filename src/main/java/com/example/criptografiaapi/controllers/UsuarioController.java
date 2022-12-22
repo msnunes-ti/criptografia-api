@@ -19,10 +19,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
-
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @PostMapping(path = "/login")
     public TokenDTO fazerLogin(@RequestBody FazerLoginDTO fazerLoginDTO) {

@@ -21,4 +21,15 @@ public class UsuarioLogadoDTO {
     Integer senhaCriptografada;
 
     String email;
+
+    @Override
+    public String toString() {
+        return "UsuarioLogadoDTO{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nome='" + nome + '\'' +
+                ", senhaCriptografada=" + senhaCriptografada +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

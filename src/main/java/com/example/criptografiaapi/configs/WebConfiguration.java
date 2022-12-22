@@ -13,12 +13,10 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     JWTUtil jwtUtil;
-
-    @Autowired
-    UsuarioRepository usuarioRepository;
-
     @Autowired
     UsuarioLogadoDTO usuarioLogadoDTO;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {

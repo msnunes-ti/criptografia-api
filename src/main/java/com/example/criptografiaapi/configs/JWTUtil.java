@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class JWTUtil {
@@ -26,6 +28,19 @@ public class JWTUtil {
     public String getUsernameFromToken(String token) {
         Map<String, Object> claims = getAllClaimsFromToken(token);
         return claims.get("sub").toString();
+    }
+
+    private Map<String, Object> separarString(String texto) {
+        String regex = "([^,\\:]+)\\:([^\\,]+)";
+        Map<String, Object> resultado = new HashMap<>();
+        Pattern parte = Pattern.compile(regex);
+        Matcher matcher = parte.matcher(texto);
+        while (matcher.find()) {
+            String chave = matcher.group(1);
+            String valor = matcher.group(2);
+            resultado.put(chave.trim(), valor.trim());
+        }
+        return resultado;
     }
 
     public Date getExpirationDateFromToken(String token) {
