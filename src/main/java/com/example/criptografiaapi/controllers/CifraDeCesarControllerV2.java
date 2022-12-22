@@ -16,10 +16,10 @@ public class CifraDeCesarControllerV2 {
     @Autowired
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
-//    @GetMapping
-//    public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
-//        return cifraDeCesarServiceV2.buscarTodasAsCifrasAindaCodificadas();
-//    }
+    @GetMapping
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
+        return cifraDeCesarServiceV2.buscarTodasAsCifrasAindaCodificadas();
+    }
 
     @GetMapping(path = "/usuario")
     public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas() {

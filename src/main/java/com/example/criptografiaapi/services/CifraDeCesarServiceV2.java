@@ -38,7 +38,7 @@ public class CifraDeCesarServiceV2 {
     }
 
     public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
-        return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
+        return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAllByUsuarioId(usuarioLogadoDTO.getId()));
     }
 
     public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas() {
@@ -187,7 +187,7 @@ public class CifraDeCesarServiceV2 {
     public void deletarCifraDeCesar(Long id) {
         CifraDeCesarModel cifraDeCesarModel = buscarCifraPeloId(id);
         if(!cifraDeCesarModel.getUsuarioId().equals(usuarioLogadoDTO.getId())) {
-            throw new RuntimeException("Cifra não encontrada para esse usuário");
+            throw new RuntimeException("Cifra não encontrada ou Não pertence a este usuário");
         }
         cifraDeCesarRepository.delete(cifraDeCesarModel);
     }
