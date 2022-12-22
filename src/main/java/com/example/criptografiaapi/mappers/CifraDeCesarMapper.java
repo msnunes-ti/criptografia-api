@@ -1,7 +1,7 @@
 package com.example.criptografiaapi.mappers;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
-import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.CriarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
 
@@ -43,6 +43,7 @@ public class CifraDeCesarMapper {
 
     public static DecodificarCifraDeCesarDTO toDecodificarCifraDeCesarDTO(CifraDeCesarModel cifraDeCesarModel) {
         DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO = new DecodificarCifraDeCesarDTO();
+        decodificarCifraDeCesarDTO.setId(cifraDeCesarModel.getId());
         decodificarCifraDeCesarDTO.setMensagem(cifraDeCesarModel.getMensagem());
         decodificarCifraDeCesarDTO.setDecricao(cifraDeCesarModel.getDescricao());
         decodificarCifraDeCesarDTO.setUsuarioId(cifraDeCesarModel.getUsuarioId());
@@ -50,11 +51,10 @@ public class CifraDeCesarMapper {
         return decodificarCifraDeCesarDTO;
     }
 
-    public static CodificarCifraDeCesarDTO toCodificarCifraDeCesarDTO(CifraDeCesarDTO cifraDeCesarDTO) {
-        CodificarCifraDeCesarDTO codificarCifraDeCesarDTO = new CodificarCifraDeCesarDTO();
-        codificarCifraDeCesarDTO.setMensagem(cifraDeCesarDTO.getMensagem());
-        codificarCifraDeCesarDTO.setDescricao(cifraDeCesarDTO.getDescricao());
-        codificarCifraDeCesarDTO.setUsuarioId(cifraDeCesarDTO.getId());
-        return codificarCifraDeCesarDTO;
+    public static CriarCifraDeCesarDTO toCodificarCifraDeCesarDTO(CifraDeCesarDTO cifraDeCesarDTO) {
+        CriarCifraDeCesarDTO criarCifraDeCesarDTO = new CriarCifraDeCesarDTO();
+        criarCifraDeCesarDTO.setMensagem(cifraDeCesarDTO.getMensagem());
+        criarCifraDeCesarDTO.setDescricao(cifraDeCesarDTO.getDescricao());
+        return criarCifraDeCesarDTO;
     }
 }

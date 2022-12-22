@@ -1,7 +1,7 @@
 package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
-import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.CriarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.UsuarioLogadoDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
@@ -30,8 +30,7 @@ public class CifraDeCesarServiceV2 {
     UsuarioRepository usuarioRepository;
 
     private CifraDeCesarModel buscarCifraPeloId(Long id) {
-        return cifraDeCesarRepository.findById(usuarioLogadoDTO.getId()).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
-//        return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
+        return cifraDeCesarRepository.findById(id).orElseThrow(() -> new RuntimeException("Cifra não encontrada com este ID"));
     }
 
     private Usuario buscarUsuarioPeloId(Long id) {
@@ -42,8 +41,8 @@ public class CifraDeCesarServiceV2 {
         return CifraDeCesarMapper.toCifraDeCesarDTOList(cifraDeCesarRepository.findAll());
     }
 
-    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas(Long id) {
-        List<CifraDeCesarModel> cifraDeCesarModelList = cifraDeCesarRepository.findAllByUsuarioId(id);
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas() {
+        List<CifraDeCesarModel> cifraDeCesarModelList = cifraDeCesarRepository.findAllByUsuarioId(usuarioLogadoDTO.getId());
         List<CifraDeCesarDTO> cifraDeCesarDTOList = new ArrayList<>();
         for(CifraDeCesarModel c: cifraDeCesarModelList) {
             CifraDeCesarDTO cifraDeCesarDTO = decodificarCifraPersistida(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(c));
@@ -53,7 +52,20 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO buscarDecodificada(Long id) {
-        CifraDeCesarModel cifraDeCesarModel = buscarCifraPeloId(id);
+        List<CifraDeCesarModel> cifraDeCesarModelList = cifraDeCesarRepository.findAllByUsuarioId(usuarioLogadoDTO.getId());
+        if(cifraDeCesarModelList.size() == 0) {
+            throw new RuntimeException("Cifra não encontrada para esse usuário");
+        }
+        CifraDeCesarModel cifraDeCesarModel = null;
+        for (CifraDeCesarModel c: cifraDeCesarModelList) {
+            if(c.getId().equals(id)) {
+                cifraDeCesarModel = c;
+                break;
+            }
+        }
+        if(cifraDeCesarModel == null) {
+            throw new RuntimeException("Cifra não encontrada para esse usuário");
+        }
         return decodificarCifraPersistida(CifraDeCesarMapper.toDecodificarCifraDeCesarDTO(cifraDeCesarModel));
     }
 
@@ -63,19 +75,17 @@ public class CifraDeCesarServiceV2 {
         return pattern.matcher(normalizer).replaceAll("");
     }
 
-    public CifraDeCesarDTO criptografarDepoisPersistir(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        Usuario usuario = buscarUsuarioPeloId(codificarCifraDeCesarDTO.getUsuarioId());
+    public CifraDeCesarDTO criptografarDepoisPersistir(CriarCifraDeCesarDTO criarCifraDeCesarDTO) {
         CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
-        cifraDeCesarModel.setMensagem(criptografarMensagem(codificarCifraDeCesarDTO.getMensagem(), usuario.getSenhaCriptografada()));
-        cifraDeCesarModel.setUsuarioId(usuario.getId());
+        cifraDeCesarModel.setUsuarioId(usuarioLogadoDTO.getId());
+        cifraDeCesarModel.setMensagem(criptografarMensagem(criarCifraDeCesarDTO.getMensagem(), usuarioLogadoDTO.getSenhaCriptografada()));
+        cifraDeCesarModel.setDescricao(criarCifraDeCesarDTO.getDescricao());
         cifraDeCesarModel.setDataDaCodificacao(LocalDateTime.now());
-        cifraDeCesarModel.setDescricao(codificarCifraDeCesarDTO.getDescricao());
         cifraDeCesarRepository.save(cifraDeCesarModel);
         return CifraDeCesarMapper.toCifraDeCesarDTO(cifraDeCesarModel);
     }
 
     public String criptografarMensagem(String mensagem, Integer senhaCriptografada) {
-
         if(senhaCriptografada < 0 || senhaCriptografada > 999999) {
             throw new RuntimeException("A senha deve conter 6 dígitos númericos");
         }
@@ -121,10 +131,9 @@ public class CifraDeCesarServiceV2 {
     }
 
     public CifraDeCesarDTO decodificarCifraPersistida(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
-        Usuario usuario = buscarUsuarioPeloId(decodificarCifraDeCesarDTO.getUsuarioId());
         CifraDeCesarDTO cifraDeCesarDTO = new CifraDeCesarDTO();
-        cifraDeCesarDTO.setId(usuario.getId());
-        cifraDeCesarDTO.setMensagem(decodificarMensagem(decodificarCifraDeCesarDTO.getMensagem(), usuario.getSenhaCriptografada()));
+        cifraDeCesarDTO.setId(decodificarCifraDeCesarDTO.getId());
+        cifraDeCesarDTO.setMensagem(decodificarMensagem(decodificarCifraDeCesarDTO.getMensagem(), usuarioLogadoDTO.getSenhaCriptografada()));
         cifraDeCesarDTO.setDescricao(decodificarCifraDeCesarDTO.getDecricao());
         cifraDeCesarDTO.setDataDaCodificacao(decodificarCifraDeCesarDTO.getDataDaCodificacao());
         return cifraDeCesarDTO;
@@ -177,6 +186,9 @@ public class CifraDeCesarServiceV2 {
 
     public void deletarCifraDeCesar(Long id) {
         CifraDeCesarModel cifraDeCesarModel = buscarCifraPeloId(id);
+        if(!cifraDeCesarModel.getUsuarioId().equals(usuarioLogadoDTO.getId())) {
+            throw new RuntimeException("Cifra não encontrada para esse usuário");
+        }
         cifraDeCesarRepository.delete(cifraDeCesarModel);
     }
 }

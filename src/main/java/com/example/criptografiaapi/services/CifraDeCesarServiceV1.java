@@ -1,7 +1,7 @@
 package com.example.criptografiaapi.services;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
-import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.CriarCifraDeCesarDTO;
 import com.example.criptografiaapi.dtos.DecodificarCifraDeCesarDTO;
 import com.example.criptografiaapi.mappers.CifraDeCesarMapper;
 import com.example.criptografiaapi.models.CifraDeCesarModel;
@@ -27,24 +27,24 @@ public class CifraDeCesarServiceV1 {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public void codificarCifraDeCesar(CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        Optional<Usuario> usuario = usuarioRepository.findById(codificarCifraDeCesarDTO.getUsuarioId());
-        if(usuario.get().getSenhaCriptografada() > 99 || usuario.get().getSenhaCriptografada() < 1) {
-            throw new RuntimeException("A senha deve estar entre 0 e 99");
-        }
-        StringBuilder textoCifrado = new StringBuilder();
-        int tamanhoTexto = codificarCifraDeCesarDTO.getMensagem().length();
-        for (int c = 0; c < tamanhoTexto; c++) {
-            int letraCifradaASCII = ((int) codificarCifraDeCesarDTO.getMensagem().charAt(c)) + usuario.get().getSenhaCriptografada();
-            while (letraCifradaASCII > 126) {
-                letraCifradaASCII -= 94;
-            }
-            textoCifrado.append((char) letraCifradaASCII);
-        }
-        CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
-        cifraDeCesarModel.setMensagem(textoCifrado.toString());
-        cifraDeCesarRepository.save(cifraDeCesarModel);
-    }
+//    public void codificarCifraDeCesar(CriarCifraDeCesarDTO criarCifraDeCesarDTO) {
+//        Optional<Usuario> usuario = usuarioRepository.findById(criarCifraDeCesarDTO.getUsuarioId());
+//        if(usuario.get().getSenhaCriptografada() > 99 || usuario.get().getSenhaCriptografada() < 1) {
+//            throw new RuntimeException("A senha deve estar entre 0 e 99");
+//        }
+//        StringBuilder textoCifrado = new StringBuilder();
+//        int tamanhoTexto = criarCifraDeCesarDTO.getMensagem().length();
+//        for (int c = 0; c < tamanhoTexto; c++) {
+//            int letraCifradaASCII = ((int) criarCifraDeCesarDTO.getMensagem().charAt(c)) + usuario.get().getSenhaCriptografada();
+//            while (letraCifradaASCII > 126) {
+//                letraCifradaASCII -= 94;
+//            }
+//            textoCifrado.append((char) letraCifradaASCII);
+//        }
+//        CifraDeCesarModel cifraDeCesarModel = new CifraDeCesarModel();
+//        cifraDeCesarModel.setMensagem(textoCifrado.toString());
+//        cifraDeCesarRepository.save(cifraDeCesarModel);
+//    }
 
     public CifraDeCesarDTO decodificarCifraDeCesar(DecodificarCifraDeCesarDTO decodificarCifraDeCesarDTO) {
         Optional<Usuario> usuario = usuarioRepository.findById(decodificarCifraDeCesarDTO.getUsuarioId());

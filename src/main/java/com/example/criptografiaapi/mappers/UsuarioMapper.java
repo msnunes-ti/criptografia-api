@@ -62,14 +62,4 @@ public class UsuarioMapper {
         usuarioSensivelDTO.setIsAtivo(usuario.getIsAtivo());
         return usuarioSensivelDTO;
     }
-
-    public static UsuarioLogadoDTO toUsuarioLogadoDTO(Usuario usuario) {
-        UsuarioLogadoDTO usuarioLogadoDTO = new UsuarioLogadoDTO();
-        usuarioLogadoDTO.setId(usuario.getId());
-        usuarioLogadoDTO.setUsername(usuario.getUsername());
-        usuarioLogadoDTO.setNome(usuario.getNome());
-        usuarioLogadoDTO.setSenhaCriptografada(usuario.getSenhaCriptografada());
-        usuarioLogadoDTO.setEmail(usuario.getEmail());
-        return usuarioLogadoDTO;
-    }
 }

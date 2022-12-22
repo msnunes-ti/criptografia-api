@@ -56,7 +56,7 @@ public class UsuarioService {
         if(!valid) {
             throw new CriptografiaApiException();
         }
-        String token = jwtUtil.generateToken(usuarioBuscado);
+        String token = jwtUtil.doGenerateToken(usuarioBuscado);
         return TokenDTO.builder().token(token).build();
     }
 

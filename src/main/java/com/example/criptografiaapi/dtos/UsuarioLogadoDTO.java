@@ -13,13 +13,9 @@ import javax.annotation.ManagedBean;
 public class UsuarioLogadoDTO {
 
     Long id;
-
     String username;
-
     String nome;
-
     Integer senhaCriptografada;
-
     String email;
 
     @Override

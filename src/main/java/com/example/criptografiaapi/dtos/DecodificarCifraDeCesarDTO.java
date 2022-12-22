@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Setter
 public class DecodificarCifraDeCesarDTO {
 
+    private Long id;
+
     private String mensagem;
 
     private String decricao;

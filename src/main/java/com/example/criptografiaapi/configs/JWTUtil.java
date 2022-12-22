@@ -2,6 +2,7 @@ package com.example.criptografiaapi.configs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.example.criptografiaapi.models.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,13 +22,13 @@ public class JWTUtil {
     @Value("${springbootjjwt.expiration}")
     private String expirationTokenTime;
 
-    public Map<String, Object> getAllClaimsFromToken(String token) {
-        return new HashMap<>(JWT.decode(token).getClaims());
-    }
-
-    public String getUsernameFromToken(String token) {
-        Map<String, Object> claims = getAllClaimsFromToken(token);
-        return claims.get("sub").toString();
+    public Long getIdDoUsuarioFromToken(String token) {
+        Map<String, Claim> allClaimsFromToken = JWT.decode(token).getClaims();
+        Long claimValue = allClaimsFromToken.get("id").asLong();
+        if(claimValue == null) {
+            throw new RuntimeException("Chave não encontrada nas Claims");
+        }
+        return claimValue;
     }
 
     private Map<String, Object> separarString(String texto) {
@@ -52,22 +53,23 @@ public class JWTUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(Usuario usuario) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", usuario.getId());
-        claims.put("username", usuario.getUsername());
-        claims.put("email", usuario.getEmail());
-        return doGenerateToken(claims, usuario.getUsername());
-    }
+//    public String generateToken(Usuario usuario) {
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("id", usuario.getId());
+//        claims.put("username", usuario.getUsername());
+//        claims.put("email", usuario.getEmail());
+//        return doGenerateToken(claims, usuario.getUsername());
+//    }
 
-    private String doGenerateToken(Map<String, Object> claims, String username) {
-
+    public String doGenerateToken(Usuario usuario) {
         long expirationTimeLong = Long.parseLong(String.valueOf(expirationTokenTime));
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong);
         return JWT.create()
-                .withClaim("claims", claims)
-                .withSubject(username)
+                .withClaim("id", usuario.getId() )
+                .withClaim("username", usuario.getUsername())
+                .withClaim("email", usuario.getEmail())
+                .withSubject(usuario.getNome())
                 .withIssuedAt(createdDate)
                 .withExpiresAt(expirationDate)
                 .sign(Algorithm.HMAC256(tokenSecret));

@@ -2,7 +2,6 @@ package com.example.criptografiaapi.interceptor;
 
 import com.example.criptografiaapi.configs.JWTUtil;
 import com.example.criptografiaapi.dtos.UsuarioLogadoDTO;
-import com.example.criptografiaapi.mappers.UsuarioMapper;
 import com.example.criptografiaapi.models.Usuario;
 import com.example.criptografiaapi.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
@@ -42,10 +41,14 @@ public class Interceptor implements HandlerInterceptor {
             response.setStatus(401);
             return false;
         }
-        String username = jwtUtil.getUsernameFromToken(tokenSeparado[1]).replace("\"", "");
-        System.out.println("Username: " + username);
-        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        usuarioLogadoDTO = UsuarioMapper.toUsuarioLogadoDTO(usuario);
+        Long idDoUsuario = jwtUtil.getIdDoUsuarioFromToken(tokenSeparado[1]);
+        System.out.println("Id do Usuário logado: " + idDoUsuario);
+        Usuario usuario = usuarioRepository.findById(idDoUsuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        usuarioLogadoDTO.setId(usuario.getId());
+        usuarioLogadoDTO.setNome(usuario.getNome());
+        usuarioLogadoDTO.setUsername(usuario.getUsername());
+        usuarioLogadoDTO.setEmail(usuario.getEmail());
+        usuarioLogadoDTO.setSenhaCriptografada(usuario.getSenhaCriptografada());
         System.out.println(usuarioLogadoDTO);
         return true; //inserir: true, para ele chegar até o Controller, se for: false, ele já retorna um erro e nem chega ao Controller.
     }

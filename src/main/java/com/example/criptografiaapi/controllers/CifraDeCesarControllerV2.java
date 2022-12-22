@@ -1,7 +1,7 @@
 package com.example.criptografiaapi.controllers;
 
 import com.example.criptografiaapi.dtos.CifraDeCesarDTO;
-import com.example.criptografiaapi.dtos.CodificarCifraDeCesarDTO;
+import com.example.criptografiaapi.dtos.CriarCifraDeCesarDTO;
 import com.example.criptografiaapi.services.CifraDeCesarServiceV2;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,14 @@ public class CifraDeCesarControllerV2 {
     @Autowired
     CifraDeCesarServiceV2 cifraDeCesarServiceV2;
 
-    @GetMapping
-    public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
-        return cifraDeCesarServiceV2.buscarTodasAsCifrasAindaCodificadas();
-    }
+//    @GetMapping
+//    public List<CifraDeCesarDTO> buscarTodasAsCifrasAindaCodificadas() {
+//        return cifraDeCesarServiceV2.buscarTodasAsCifrasAindaCodificadas();
+//    }
 
-    @GetMapping(path = "/usuario/{id}")
-    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas(@PathVariable Long id) {
-        return cifraDeCesarServiceV2.buscarTodasAsCifrasDoUsuarioJaDecodificadas(id);
+    @GetMapping(path = "/usuario")
+    public List<CifraDeCesarDTO> buscarTodasAsCifrasDoUsuarioJaDecodificadas() {
+        return cifraDeCesarServiceV2.buscarTodasAsCifrasDoUsuarioJaDecodificadas();
     }
 
     @GetMapping(path = "/{id}")
@@ -32,8 +32,8 @@ public class CifraDeCesarControllerV2 {
     }
 
     @PostMapping(path = "/codificar")
-    public @ResponseBody CifraDeCesarDTO codificarCifraDeCesar(@RequestBody @NotNull CodificarCifraDeCesarDTO codificarCifraDeCesarDTO) {
-        return cifraDeCesarServiceV2.criptografarDepoisPersistir(codificarCifraDeCesarDTO);
+    public @ResponseBody CifraDeCesarDTO codificarCifraDeCesar(@RequestBody @NotNull CriarCifraDeCesarDTO criarCifraDeCesarDTO) {
+        return cifraDeCesarServiceV2.criptografarDepoisPersistir(criarCifraDeCesarDTO);
     }
 
     @DeleteMapping(path = "/{id}")
