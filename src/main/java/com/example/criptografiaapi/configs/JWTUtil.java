@@ -53,14 +53,6 @@ public class JWTUtil {
         return expiration.before(new Date());
     }
 
-//    public String generateToken(Usuario usuario) {
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put("id", usuario.getId());
-//        claims.put("username", usuario.getUsername());
-//        claims.put("email", usuario.getEmail());
-//        return doGenerateToken(claims, usuario.getUsername());
-//    }
-
     public String doGenerateToken(Usuario usuario) {
         long expirationTimeLong = Long.parseLong(String.valueOf(expirationTokenTime));
         final Date createdDate = new Date();
