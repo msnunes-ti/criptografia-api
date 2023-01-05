@@ -106,4 +106,5 @@ public class UsuarioService {
         Usuario usuario = buscarUsuarioPeloId(id);
         usuarioRepository.delete(usuario);
     }
+    
 }
