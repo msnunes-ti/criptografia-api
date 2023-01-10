@@ -1,11 +1,28 @@
 package com.example.criptografiaapi.tests.usuariotest;
 
+import com.example.criptografiaapi.models.Usuario;
+import com.example.criptografiaapi.services.UsuarioService;
+import org.junit.Assert;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class UsuarioTest {
 
-    //cenario
+    UsuarioService usuarioService;
 
-    //ação
+    @Test
+    public void testeDeBuscaDeUsuario() {
 
-    //verificação
-    
+        //cenário
+        Usuario usuario;
+
+        //acao
+        usuario = Mockito.mock(UsuarioService.class).buscarUsuarioPeloId(1L);
+        //verificacao
+        Assert.assertEquals(usuario.getUsername(), "");
+
+    }
+
+
 }
